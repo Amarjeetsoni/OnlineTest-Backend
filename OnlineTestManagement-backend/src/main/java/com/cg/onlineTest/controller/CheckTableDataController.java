@@ -39,6 +39,8 @@ public class CheckTableDataController {
 		return "Hello World! from Spring Framework!";
 	}
 	
+	//asldnaskjdb
+	
 	@PostMapping("/saveuser")
 	public ResponseEntity<Object> registerUser(@RequestBody NewUser user){
 		try {
