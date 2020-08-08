@@ -2,7 +2,9 @@ package com.cg.onlineTest.entities;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -43,7 +45,7 @@ public class Test implements Serializable{
 	
 	@OneToMany(mappedBy="testQuestions")
 	@JsonIgnore
-	private Set<Question> allQuestion = new HashSet<>();
+	private List<Question> allQuestion = new ArrayList<>();
 	
 	
 	
@@ -84,12 +86,12 @@ public class Test implements Serializable{
 	}
 
 
-	public Set<Question> getAllQuestion() {
+	public List<Question> getAllQuestion() {
 		return allQuestion;
 	}
 
 
-	public void setAllQuestion(Set<Question> allQuestion) {
+	public void setAllQuestion(List<Question> allQuestion) {
 		this.allQuestion = allQuestion;
 	}
 

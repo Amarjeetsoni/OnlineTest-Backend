@@ -2,10 +2,7 @@ package com.cg.onlineTest.dao;
 
 
 
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.sql.Timestamp;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -40,56 +37,44 @@ public class DaoTestClass {
 		return true;
 	}
 	
-	public User getAllUserList(){
+	public User getAllUserList(long userId){
 //		String statement = "SELECT user FROM User user";
 //		 TypedQuery<User> query = entityManager.createQuery(statement, User.class);
 //		List<User> userList = query.getResultList();
-		long var1 = 724;
-		User user = entityManager.find(User.class, var1);
+		User user = entityManager.find(User.class, userId);
 		return user;
 	}
 	
-	public Test getAllTestList(){
+	public Test getAllTestList(long testId){
 //		String statement = "SELECT user FROM Test user";
 //		 TypedQuery<Test> query = entityManager.createQuery(statement, Test.class);
 //		List<Test> userList = query.getResultList();
 //		return userList.get(0);
-		long var1 = 727;
-		Test user = entityManager.find(Test.class, var1);
+		Test user = entityManager.find(Test.class, testId);
 		user.getAllQuestion().forEach(t->System.out.println(t));
 		return user;
 	}
 	
-	public boolean assignTest() {
-		long var = 727;
-		long var1 = 724;
-		long question = 20;
-		Test test = entityManager.find(Test.class, var);
-		User user = entityManager.find(User.class, var1);
-		List<Boolean> answers = new ArrayList<>();
-		answers.add(true);
-		answers.add(false);
-		answers.add(true);
-		answers.add(true);
-		answers.add(false);
-		answers.add(true);
+	public boolean addOptionInTest(long question_id, Set<String> option) {
+		Question question = entityManager.find(Question.class, question_id);
+		question.setQuestionOptions(option);
+		entityManager.merge(question);
+		return true;
 		
-        System.out.println(test.getTest_Id());
-        System.out.println(user.getUserId());
 		
-		User_Test usertest = new User_Test(user, test, question);
-//		usertest.setUser_Test_Id(101);
+	}
+	
+	public boolean assignTest(long testId, long userId) {
+		Test test = entityManager.find(Test.class, testId);
+		User user = entityManager.find(User.class, userId);
+		
+		User_Test usertest = new User_Test(user, test, 0, false, 0);
 		test.addUserTestDetails(usertest);
-		usertest.setTestCorrectAnswer(answers);
-//		
 		entityManager.merge(usertest);
-
-		
 		return true;
 	}
 	
-	public User_Test updateTest() {
-		long val = 730;
+	public User_Test updateTest(long val) {
         User_Test user = entityManager.find(User_Test.class, val);
 //		entityManager.merge(user);
         return user;
@@ -113,24 +98,28 @@ public class DaoTestClass {
 	
 	
 	
-	public boolean updateQuestion() {
-		long var = 733;
-		long catId = 734;
-		long testId = 727;
+	public boolean addCategory(long var, long catId, long testId) {
 		Question ques = entityManager.find(Question.class, var);
 		Category cat = entityManager.find(Category.class, catId);
 		Test test = entityManager.find(Test.class, testId);
-		Set<String> answers = new HashSet<>() ;
-		answers.add("5");
-		answers.add("6");
-		answers.add("7");
-		answers.add("8");
-		ques.setQuestionOptions(answers);
 		cat.addQuestion(ques);
 		test.addQuestion(ques);
 		entityManager.merge(cat);
 		entityManager.merge(test);
 	    entityManager.merge(ques);
+		return true;
+	}
+
+	public boolean updateTestDetails(long test_id, String testTitle, long testDuration, Timestamp startDate,
+			Timestamp endDate, long totalQuestion) {
+		
+		Test test = entityManager.find(Test.class, test_id);
+		test.setEndDate(endDate);
+		test.setStartDate(startDate);
+		test.setTotalQuestion(totalQuestion);
+		test.setTestDuration(testDuration);
+		test.setTestTitle(testTitle);
+		entityManager.persist(test);
 		return true;
 	}
 	

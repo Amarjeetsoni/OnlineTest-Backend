@@ -123,11 +123,4 @@ public class Question implements Serializable{
 		this.testQuestions = testQuestions;
 	}
     
-	
-	
-	
-	
-	
-	
-
 }

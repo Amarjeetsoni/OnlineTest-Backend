@@ -2,7 +2,8 @@ package com.cg.onlineTest.controller;
 
 
 import java.sql.Timestamp;
-
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.onlineTest.dao.DaoTestClass;
@@ -107,12 +109,54 @@ public class CheckTableDataController {
 	   }
 	}
 	
+	@PostMapping("/addOption")
+	public ResponseEntity<Object> addOption(@RequestBody Options option){
+		try {
+			long question_id = option.question_Id;
+			Set<String> options = new HashSet<>();
+			options.add(option.option1);
+			options.add(option.option2);
+			options.add(option.option3);
+			options.add(option.option4);
+			dao.addOptionInTest(question_id, options);
+			return new ResponseEntity<Object>("Options added for question", HttpStatus.OK);
+		}
+		catch(Exception exception){
+			return new ResponseEntity<Object>("An Error HAs been occured", HttpStatus.BAD_GATEWAY);
+		}
+	}
+	
+	@PostMapping("/addCategoryTest")
+	public ResponseEntity<Object> addCategoryQuetion(@RequestBody addCategory cat){
+		try {
+			System.out.println(cat.question_id + " " + cat.category_id);
+			dao.addCategory(cat.question_id, cat.category_id, cat.test_id);
+			return new ResponseEntity<Object>("category and test added for question", HttpStatus.OK);
+		}
+		catch(Exception exception){
+			return new ResponseEntity<Object>("An Error HAs been occured", HttpStatus.BAD_GATEWAY);
+		}
+	}
+	
+	@PostMapping("/updateTest")
+	public ResponseEntity<Object> updateTestDetails(@RequestBody TestDetails test){
+		try {
+			dao.updateTestDetails(test.test_id, test.testTitle, test.testDuration, test.startDate, test.endDate, test.totalQuestion);
+			return new ResponseEntity<Object>("Details updated successfully", HttpStatus.OK);
+			
+		}
+		catch(Exception exception) {
+			return new ResponseEntity<Object>("An Error HAs been occured", HttpStatus.BAD_GATEWAY);
+		}
+		
+	}
+	
 	
 	@GetMapping("/getAllUser")
-	public ResponseEntity<Object> getUser(){
+	public ResponseEntity<Object> getUser(@RequestParam("userId") long userId){
 		try {
 			System.out.println("This Works..");
-			return new ResponseEntity<Object>(dao.getAllUserList(), HttpStatus.OK);
+			return new ResponseEntity<Object>(dao.getAllUserList(userId), HttpStatus.OK);
 		}
 		catch(Exception exception) {
 			return new ResponseEntity<Object>("Not Founded...", HttpStatus.BAD_GATEWAY);
@@ -120,10 +164,10 @@ public class CheckTableDataController {
 	}
 	
 	@GetMapping("/getAllTest")
-	public ResponseEntity<Object> getTest(){
+	public ResponseEntity<Object> getTest(@RequestParam("testId") long testId){
 		try {
 			System.out.println("This Works..");
-			return new ResponseEntity<Object>(dao.getAllTestList(), HttpStatus.OK);
+			return new ResponseEntity<Object>(dao.getAllTestList(testId), HttpStatus.OK);
 		}
 		catch(Exception exception) {
 			return new ResponseEntity<Object>("Not Founded...", HttpStatus.BAD_GATEWAY);
@@ -131,9 +175,9 @@ public class CheckTableDataController {
 	}
 	
 	@GetMapping("/assignTest")
-	public ResponseEntity<Object> assignTest(){
+	public ResponseEntity<Object> assignTest(@RequestParam("testId") long testId, @RequestParam("userId") long userId){
 		try {
-	    dao.assignTest();
+	    dao.assignTest(testId, userId);
 	    return new ResponseEntity<Object>("User Founded...", HttpStatus.OK);
 		}
 		catch(Exception exception) {
@@ -144,10 +188,10 @@ public class CheckTableDataController {
 	
 	
 	@GetMapping("/UpdateTest")
-	public ResponseEntity<Object> updateTest(){
+	public ResponseEntity<Object> updateTest(@RequestParam("UserId") long userId){
 		try {
 		
-			return new ResponseEntity<Object>(dao.updateTest(), HttpStatus.OK);
+			return new ResponseEntity<Object>(dao.updateTest(userId), HttpStatus.OK);
 		}
 		catch(Exception exception) {
 			return new ResponseEntity<Object>("Not Founded...", HttpStatus.BAD_GATEWAY);
@@ -171,7 +215,7 @@ public class CheckTableDataController {
 	public ResponseEntity<Object> updateQuestion(){
 		try {
 		   
-			return new ResponseEntity<Object>(dao.updateQuestion(), HttpStatus.OK);
+			return new ResponseEntity<Object>("", HttpStatus.OK);
 		}
 		catch(Exception exception) {
 			return new ResponseEntity<Object>("Not Founded...", HttpStatus.BAD_GATEWAY);
@@ -203,4 +247,27 @@ class Testclass{
 
 class Stringclass{
 	public String name;
+}
+
+class Options{
+	public long question_Id;
+	public String option1;
+	public String option2;
+	public String option3;
+	public String option4;
+}
+
+class addCategory{
+	public long test_id;
+	public long question_id;
+	public long category_id;
+}
+
+class TestDetails{
+	public long test_id;
+	public String testTitle;
+	public long testDuration;
+	public long totalQuestion;
+	public Timestamp startDate;
+	public Timestamp endDate;
 }

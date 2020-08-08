@@ -60,12 +60,19 @@ public class User_Test {
 	}
 	
 	
-	public User_Test(User user, Test test, long totalAttempt) {
+	
+
+	public User_Test(User user, Test test, long totalAttempt, boolean isAttempted, long marksScored) {
 		super();
 		this.user = user;
 		this.test = test;
 		this.totalAttempt = totalAttempt;
+		this.isAttempted = isAttempted;
+		this.marksScored = marksScored;
 	}
+
+
+
 
 	public long getTotalAttempt() {
 		return totalAttempt;
