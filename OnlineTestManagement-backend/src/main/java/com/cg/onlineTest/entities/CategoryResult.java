@@ -39,6 +39,10 @@ public class CategoryResult {
 	@Column(name = "attempted_questions")
 	private Long attemptedQuestions;
 
+	public CategoryResult() {
+		
+	}
+	
 	public CategoryResult(User_Test userTest, Category category, Long categoryResult, Long attemptedQuestions) {
 		super();
 		this.userTest = userTest;

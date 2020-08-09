@@ -1,17 +1,18 @@
 package com.cg.onlineTest.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cg.onlineTest.entities.User;
+import com.cg.onlineTest.OnlineTestManagementBackendApplication;
 import com.cg.onlineTest.services.ResultService;
 
 @SpringBootApplication
@@ -22,18 +23,48 @@ public class ResultController {
 	@Autowired
 	ResultService service;
 	
+	Logger logger = LoggerFactory.getLogger(OnlineTestManagementBackendApplication.class);
+	String msg;
+	
+	/*
+	 * Method : getUserResult Description : Used to fetch the result details of a \
+	 * particular user from database.
+	 * 
+	 * @param userId : Identification of the User attempted the tests.
+	 * 
+	 * @return List<userTest> : It returns the ArrayList of Results.
+	 * 
+	 * throws Exception i.e.
+	 * NoDataFoundedException : It is raised if there are no bookings in the database.
+	 * SqlInternalServerException : It is raised if there is an sql exception.
+	 */
 	@GetMapping("/getResult/{userId}")
-	public ResponseEntity<Object> getUser(@PathVariable Long userId){
+	public ResponseEntity<Object> getUserResult(@PathVariable Long userId) throws Exception{
 		   
-		System.out.println(userId);
+		msg = "Fetching the Results of user :" + userId;
+		logger.info(msg);
 		return new ResponseEntity<Object>(service.getResult(userId), HttpStatus.OK);
-//		try {
-//			System.out.println("This Works..");
-//			return new ResponseEntity<Object>(service.getResult(userId), HttpStatus.OK);
-//		}
-//		catch(Exception exception) {
-//			return new ResponseEntity<Object>("Not Founded...", HttpStatus.BAD_GATEWAY);
-//		}
+	}
+	
+
+	/*
+	 * Method : getCategoryResult Description : Used to fetch the category wise result of a \
+	 * particular test from database.
+	 * 
+	 * @param userTestId : Identification of the test attempted by any particular user.
+	 * 
+	 * @return List<CategoryResult> : It returns the ArrayList of Category wise Results.
+	 * 
+	 * throws Exception i.e.
+	 * NoDataFoundedException : It is raised if there are no bookings in the database.
+	 * SqlInternalServerException : It is raised if there is an sql exception.
+	 */
+	@GetMapping("/getCategoryResult/{userTestId}")
+	public ResponseEntity<Object> getCategoryResult(@PathVariable Long userTestId) throws Exception{
+		
+		msg = "Fetching the Category wise results :";
+		logger.info(msg);
+		return new ResponseEntity<Object>(service.getCategoryResult(userTestId), HttpStatus.OK);
 	}
 	
 }
