@@ -4,19 +4,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
+import org.springframework.boot.test.context.SpringBootTest;
 import com.cg.onlineTest.entities.Question;
 import com.cg.onlineTest.services.QuestionTestService;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 class QuestionTestTESTING {
 
 	//QuestionDao dao;
 		@Mock
-		private QuestionTestService dao;
+		QuestionTestService dao;
 		
 		
 	   //Deepika
@@ -24,28 +22,28 @@ class QuestionTestTESTING {
 		void testretrieveAllQuestion() {
 			
 			when(dao.retrieveAllQuestion()).thenReturn(null);
-			assertEquals(0, dao.retrieveAllQuestion());
+			assertEquals(null, dao.retrieveAllQuestion());
 		}
 		
 		@Test
 		 void testaddQuestion() throws Exception{
 			Question question1 = new Question();
 			when(dao.addQuestion(question1)).thenReturn(null);
-			assertEquals(0, dao.addQuestion(question1));
+			assertEquals(null, dao.addQuestion(question1));
 			
 		}
 		
 		@Test
 		void testdeleteQuestion() throws Exception {
-			when(dao.deleteQuestion(1)).thenReturn(null);
-			assertEquals(null, dao.deleteQuestion(1));
+			when(dao.deleteQuestion(1L)).thenReturn(null);
+			assertEquals(null, dao.deleteQuestion(1L));
 		}
 		
 		@Test
 		void testupdateQuestion() throws Exception {
 			Question question1 = new Question();
 			when(dao.updateQuestion(question1)).thenReturn(null);
-			assertEquals(0, dao.updateQuestion(question1));
+			assertEquals(null, dao.updateQuestion(question1));
 		}
 
 }
