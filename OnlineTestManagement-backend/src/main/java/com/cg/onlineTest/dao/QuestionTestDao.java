@@ -7,7 +7,7 @@ import com.cg.onlineTest.entities.Question;
 
 public interface QuestionTestDao {
 
-	Boolean addQuestion(Question question);
+	Boolean addQuestion(Question question, long cat_id);
 	
 	Boolean updateQuestion(Question question);
 	

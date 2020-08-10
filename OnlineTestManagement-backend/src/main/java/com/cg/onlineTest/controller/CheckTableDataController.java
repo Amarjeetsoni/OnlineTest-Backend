@@ -26,6 +26,7 @@ import com.cg.onlineTest.entities.User;
 @SpringBootApplication
 @RestController
 @CrossOrigin("*")
+@RequestMapping("/checkOnly")
 public class CheckTableDataController {
 	
 	
@@ -180,7 +181,7 @@ public class CheckTableDataController {
 	public ResponseEntity<Object> assignTest(@RequestParam("testId") long testId, @RequestParam("userId") long userId){
 		try {
 	    dao.assignTest(testId, userId);
-	    return new ResponseEntity<Object>("User Founded...", HttpStatus.OK);
+	    return new ResponseEntity<Object>("User Founded... and Test Assigned", HttpStatus.OK);
 		}
 		catch(Exception exception) {
 			return new ResponseEntity<Object>("Not Founded...", HttpStatus.BAD_GATEWAY);

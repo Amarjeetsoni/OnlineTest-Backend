@@ -28,8 +28,8 @@ class QuestionTestTESTING {
 		@Test
 		 void testaddQuestion() throws Exception{
 			Question question1 = new Question();
-			when(dao.addQuestion(question1)).thenReturn(null);
-			assertEquals(null, dao.addQuestion(question1));
+			when(dao.addQuestion(question1, 101)).thenReturn(null);
+			assertEquals(null, dao.addQuestion(question1, 101));
 			
 		}
 		

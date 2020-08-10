@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ import com.cg.onlineTest.exceptions.NoDataFoundedException;
 @Repository("DaoTestClass")
 @Transactional
 public class DaoTestClass {
+	Logger logger = LoggerFactory.getLogger(DaoTestClass.class);
 
 	@Autowired
 	private OnlineTestDao onlineTestDao; 
@@ -78,12 +81,14 @@ public class DaoTestClass {
 		query.setParameter("pTest", testId);
 		List<User_Test> user_Test = query.getResultList();
 		if(!user_Test.isEmpty()) {
+			logger.error("User Is assigned in that perticular test already...------------------------------------------");
 			throw new NoDataFoundedException("User Is assigned in that perticular test already...");
 		}
 		
 		Test test = entityManager.find(Test.class, testId);
 		User user = entityManager.find(User.class, userId);
 		if(test == null || user == null) {
+			logger.error("User id Or Test Id Is Invalid...-----------------------------------------");
 			throw new NoDataFoundedException("User id Or Test Id Is Invalid...");
 		}
 		
@@ -101,6 +106,7 @@ public class DaoTestClass {
 				continue;
 			}
 			else {
+				logger.error("In the given slot user has assigned in another test...");
 				throw new Exception("In the given slot user has assigned in another test...");
 			}
 			

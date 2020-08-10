@@ -21,7 +21,10 @@ public class QuestionTestDaoImpl implements QuestionTestDao {
 	
 	
 	@Override
-	public Boolean addQuestion(Question question) {
+	public Boolean addQuestion(Question question, long cat_id) {
+		Category category = entityManager.find(Category.class, cat_id);
+		category.addQuestion(question);
+		entityManager.persist(category);
 		entityManager.persist(question);
 		return true;
 	}
