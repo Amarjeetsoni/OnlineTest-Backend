@@ -3,12 +3,14 @@ package com.cg.onlineTest.dao;
 
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +19,15 @@ import com.cg.onlineTest.entities.Question;
 import com.cg.onlineTest.entities.Test;
 import com.cg.onlineTest.entities.User;
 import com.cg.onlineTest.entities.User_Test;
+import com.cg.onlineTest.exceptions.NoDataFoundedException;
 
 
 @Repository("DaoTestClass")
 @Transactional
 public class DaoTestClass {
 
+	@Autowired
+	private OnlineTestDao onlineTestDao; 
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -64,14 +69,54 @@ public class DaoTestClass {
 		
 	}
 	
-	public boolean assignTest(long testId, long userId) {
+	public boolean assignTest(long testId, long userId) throws Exception {
+		
+		try{
+		String statement = "SELECT user FROM User_Test user WHERE User_Id=:pUser and Test_Id=:pTest";
+		TypedQuery<User_Test> query = entityManager.createQuery(statement, User_Test.class);
+		query.setParameter("pUser", userId);
+		query.setParameter("pTest", testId);
+		List<User_Test> user_Test = query.getResultList();
+		if(!user_Test.isEmpty()) {
+			throw new NoDataFoundedException("User Is assigned in that perticular test already...");
+		}
+		
 		Test test = entityManager.find(Test.class, testId);
 		User user = entityManager.find(User.class, userId);
+		if(test == null || user == null) {
+			throw new NoDataFoundedException("User id Or Test Id Is Invalid...");
+		}
+		
+		List<Test> testList = onlineTestDao.getAllTestAssignToPerticularUser(userId);
+		Timestamp testStartDate = test.getStartDate();
+		Timestamp testEndDate = test.getEndDate();
+		
+		for(Test testObject: testList) {
+			Timestamp assignedTestStartDate = testObject.getStartDate();
+			Timestamp assignedTestEndDate = testObject.getEndDate();
+			int firstCompare = testEndDate.compareTo(assignedTestStartDate);
+			int secondCompare = assignedTestEndDate.compareTo(testStartDate);
+			
+			if(firstCompare > 0 && secondCompare > 0) {
+				continue;
+			}
+			else {
+				throw new Exception("In the given slot user has assigned in another test...");
+			}
+			
+		}
 		
 		User_Test usertest = new User_Test(user, test, 0, false, 0);
 		test.addUserTestDetails(usertest);
 		entityManager.merge(usertest);
 		return true;
+		}
+		catch(NoDataFoundedException exception) {
+			throw new NoDataFoundedException(exception.getMessage());
+		}
+		catch(Exception exception) {
+			throw new Exception("Internal Server Error..");
+		}
 	}
 	
 	public User_Test updateTest(long val) {
