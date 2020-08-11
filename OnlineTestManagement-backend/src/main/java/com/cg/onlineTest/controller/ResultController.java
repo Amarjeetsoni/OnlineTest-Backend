@@ -21,7 +21,7 @@ import com.cg.onlineTest.services.ResultService;
 public class ResultController {
 
 	@Autowired
-	ResultService service;
+	private ResultService resultService;
 	
 	Logger logger = LoggerFactory.getLogger(OnlineTestManagementBackendApplication.class);
 	String msg;
@@ -36,14 +36,14 @@ public class ResultController {
 	 * 
 	 * throws Exception i.e.
 	 * NoDataFoundedException : It is raised if there are no bookings in the database.
-	 * SqlInternalServerException : It is raised if there is an sql exception.
+	 * DataMismatchException : It is raised if there is an sql exception.
 	 */
 	@GetMapping("/getResult/{userId}")
 	public ResponseEntity<Object> getUserResult(@PathVariable Long userId) throws Exception{
 		   
 		msg = "Fetching the Results of user :" + userId;
 		logger.info(msg);
-		return new ResponseEntity<Object>(service.getResult(userId), HttpStatus.OK);
+		return new ResponseEntity<Object>(resultService.getResult(userId), HttpStatus.OK);
 	}
 	
 
@@ -57,14 +57,14 @@ public class ResultController {
 	 * 
 	 * throws Exception i.e.
 	 * NoDataFoundedException : It is raised if there are no bookings in the database.
-	 * SqlInternalServerException : It is raised if there is an sql exception.
+	 * DataMismatchException : It is raised if there is an sql exception.
 	 */
 	@GetMapping("/getCategoryResult/{userTestId}")
 	public ResponseEntity<Object> getCategoryResult(@PathVariable Long userTestId) throws Exception{
 		
 		msg = "Fetching the Category wise results :";
 		logger.info(msg);
-		return new ResponseEntity<Object>(service.getCategoryResult(userTestId), HttpStatus.OK);
+		return new ResponseEntity<Object>(resultService.getCategoryResult(userTestId), HttpStatus.OK);
 	}
 	
 }
