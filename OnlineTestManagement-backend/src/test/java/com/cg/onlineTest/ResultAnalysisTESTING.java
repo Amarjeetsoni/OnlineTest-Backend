@@ -15,20 +15,20 @@ import com.cg.onlineTest.services.ResultAnalysisService;
 class ResultAnalysisTESTING {
 
 	@Mock
-	ResultAnalysisService dao;
+	ResultAnalysisService resultAnalysisService;
 	
 	@Test
 	void testGetResult() {
 		User user = new User();
-		when(dao.getResult(user)).thenReturn(null);
-		assertEquals(null, dao.getResult(user));
+		when(resultAnalysisService.getResult(user)).thenReturn(null);
+		assertEquals(null, resultAnalysisService.getResult(user));
 	}
 
 	@Test
-	void testcategoryAnalysis() {
+	void testCategoryAnalysis() {
 		User_Test userTest = new User_Test();
-		when(dao.getCategoryAnalysis(userTest)).thenReturn(null);
-		assertEquals(null, dao.getCategoryAnalysis(userTest));
+		when(resultAnalysisService.getCategoryAnalysis(userTest)).thenReturn(null);
+		assertEquals(null, resultAnalysisService.getCategoryAnalysis(userTest));
 	}
 
 }
