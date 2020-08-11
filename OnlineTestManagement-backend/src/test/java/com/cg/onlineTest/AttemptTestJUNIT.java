@@ -1,6 +1,7 @@
 package com.cg.onlineTest;
 
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cg.onlineTest.controller.OnlineTestController;
 import com.cg.onlineTest.entities.FeedBack;
 import com.cg.onlineTest.entities.Question;
+import com.cg.onlineTest.exceptions.DataMismatchExcpetion;
 import com.cg.onlineTest.exceptions.NoDataFoundedException;
 import com.cg.onlineTest.services.OnlineTestService;
 
@@ -36,6 +38,7 @@ class AttemptTestJUNIT {
 	 * also use to get info what is going in the application.
 	 */
 	Logger logger = LoggerFactory.getLogger(OnlineTestController.class);
+	
 	
 	/*
 	 * @Autowired is used to
@@ -74,37 +77,28 @@ class AttemptTestJUNIT {
 	@DisplayName("Testing of getAllTestAssignToPerticularUser")
 	void getAllTestAssignToPerticularUserTEST() throws Exception {
 		logger.info("Validation of Get All test Assign to perticular user");
-		String message = null;
 		List<com.cg.onlineTest.entities.Test> test = null;
 		
 		//--------------------- TEST CASE 1 -----------------------------//
 		/*
 		 * In this test case we are passing a invalid user Id
-		 * that function is "No such User Exist...".
+		 * that function throws  DataMismatchExcpetion with message "No such User Exist...".
 		 */
-				
-		 try {
-			 
-			test = testService.getAllTestAssignToPerticularUser(101);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals("No such User Exist...", message);
+			
+		
+		assertThrows(DataMismatchExcpetion.class,()->{
+			testService.getAllTestAssignToPerticularUser(101);
+		});
 		
 		//--------------------- TEST CASE 2 -----------------------------//
 		/*
 		 * In this test case we are passing a valid UserId but test are not alloted to that user then
-		 * that function is "No Test Assigned to particular User...".
+		 * that function throws NoDataFoundedException with message "No Test Assigned to particular User...".
 		 */
 		
-	    try {
-			test = testService.getAllTestAssignToPerticularUser(762);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals("No Test Assigned to particular User...", message);
+		assertThrows(NoDataFoundedException.class,()->{
+			testService.getAllTestAssignToPerticularUser(762);
+		});
 		
 		//--------------------- TEST CASE 3 -----------------------------//
 		/*
@@ -112,13 +106,8 @@ class AttemptTestJUNIT {
 		 * that function return test Details we are checking number of Test assigned.
 		 */
 		
-	    try {
 			test = testService.getAllTestAssignToPerticularUser(735);
-		}
-		catch(Exception exception) {
-			message = exception.getMessage();
-		}
-		assertEquals(4, test.size());
+		    assertEquals(4, test.size());
 		
 	}
 	
@@ -126,52 +115,16 @@ class AttemptTestJUNIT {
 	@DisplayName("Testing of getAllUpcomingTest")
 	void getAllUpcomingTestTEST() throws Exception {
 		logger.info("Validation of Get All upcoming test to a particular user");
-		String message = null;
 		List<com.cg.onlineTest.entities.Test> test = null;
 		
 		//--------------------- TEST CASE 1 -----------------------------//
 		/*
-		 * In this test case we are passing a invalid user Id
-		 * that function is "No such User Exist...".
-		 */
-				
-		 try {
-			 
-			test = testService.getAllUpcomingTest(101);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals("No such User Exist...", message);		
-		
-		
-		//--------------------- TEST CASE 2 -----------------------------//
-		/*
-		 * In this test case we are passing a valid UserIdand upcoming test is there then
+		 * In this test case we are passing a valid UserId and upcoming test is there then
 		 * that function returns test details and we are checking number here;
 		 */
+		test = testService.getAllUpcomingTest(735);
+		assertEquals(2, test.size());
 		
-	    try {
-			test = testService.getAllUpcomingTest(736);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals(1, test.size());
-		
-		//--------------------- TEST CASE 3 -----------------------------//
-		/*
-		 * In this test case we are passing a valid UserId which has assigned upcoming Test then
-		 * that function return test Details we are checking number of Test assigned
-		 */
-		
-	    try {
-			test = testService.getAllUpcomingTest(735);
-		}
-		catch(Exception exception) {
-			message = exception.getMessage();
-		}
-		assertEquals(1, test.size());
 		
 	}
 	
@@ -179,52 +132,28 @@ class AttemptTestJUNIT {
 	@DisplayName("Testing of getActiveTest")
 	void getActiveTestTEST() throws Exception {
 		logger.info("Validation of Active Test");
-		String message = null;
 		com.cg.onlineTest.entities.Test test = null;
+		
 		
 		//--------------------- TEST CASE 1 -----------------------------//
 		/*
-		 * In this test case we are passing a invalid user Id
-		 * that function is "No such User Exist...".
+		 * In this test case we are passing a valid UserId but No test is active then
+		 * that function throws NoDataFoundedException with message "Currently No test is Active for given user".
 		 */
-				
-		 try {
-			 
-			test = testService.getActiveTest(101);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals("No such User Exist...", message);		
 		
+		 assertThrows(NoDataFoundedException.class,()->{
+		     testService.getActiveTest(736);
+		 });
 		
 		//--------------------- TEST CASE 2 -----------------------------//
 		/*
-		 * In this test case we are passing a valid UserId but No test is active then
-		 * that function is "Currently No test is Active for given user".
-		 */
-		
-	    try {
-			test = testService.getActiveTest(736);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals("Currently No test is Active for given user", message);
-		
-		//--------------------- TEST CASE 3 -----------------------------//
-		/*
 		 * In this test case we are passing a valid UserId which has Currently active test then
-		 * that function return test Details we are checking number of Test assigned
+		 * that function return test Details we are checking Test Title
 		 */
 		
-	    try {
-			test = testService.getActiveTest(735);
-		}
-		catch(Exception exception) {
-			message = exception.getMessage();
-		}
-		assertEquals("Title of test", test.getTestTitle());
+	    
+		 test = testService.getActiveTest(4);
+		 assertEquals("Title of test", test.getTestTitle());
 		
 	}
 	
@@ -233,38 +162,26 @@ class AttemptTestJUNIT {
 	@DisplayName("Testing of getAllQuestion")
 	void getAllQuestionTEST() throws Exception {
 		logger.info("Validation of Get All Question of peticular test");
-		String message = null;
 		List<Question> question = null;
 		
 		//--------------------- TEST CASE 1 -----------------------------//
 		/*
 		 * In this test case we are passing a valid test Id and in that test no question assigned then
-		 * that function is "No question details are available for this test".
+		 * that function throws NoDataFoundedException with message "No question details are available for this test".
 		 */
-				
-		 try {
 			 
-			 question = testService.getAllQuestion(758);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals("No question details are available for this test", message);		
+		 assertThrows(NoDataFoundedException.class,()->{
+			 testService.getAllQuestion(758);	
+		 });		
 		
 		
 		//--------------------- TEST CASE 2 -----------------------------//
 		/*
-		 * In this test case we are passing a valid UserId but No test is active then
-		 * that function is "Currently No test is Active for given user".
+		 * In this test case we are passing a valid test id then
+		 * that function returns test List we are checking number of test.
 		 */
-		
-	    try {
 	    	question = testService.getAllQuestion(737);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals(5, question.size());
+		    assertEquals(5, question.size());
 		
 			
 	}
@@ -275,38 +192,27 @@ class AttemptTestJUNIT {
 	@DisplayName("Testing of getAllFeedback")
 	void getAllFeedbackTEST() throws Exception {
 		logger.info("Validation of Get All Feedback of perticular TestId");
-		String message = null;
 		List<FeedBack> feedback = null;
 		
 		//--------------------- TEST CASE 1 -----------------------------//
 		/*
 		 * In this test case we are passing a valid test Id and in that test no feedback is there then
-		 * that function is "No Feedback Data Is available..".
+		 * that function throws NoDataFoundedException with message "No Feedback Data Is available..".
 		 */
 				
-		 try {
-			 
-			 feedback = testService.getAllFeedback(738);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals("No Feedback Data Is available..", message);		
+		assertThrows(NoDataFoundedException.class,()->{
+			testService.getAllFeedback(738);	
+		 }); 		
 		
 		
 		//--------------------- TEST CASE 2 -----------------------------//
 		/*
-		 * In this test case we are passing a valid UserId but No test is active then
-		 * that function is "Currently No test is Active for given user".
+		 * In this test case we are passing a valid test id then
+		 * that function return all feedback associated with that test id and we are checking number of feedback.
 		 */
 		
-	    try {
 	    	feedback = testService.getAllFeedback(737);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals(2, feedback.size());
+		    assertEquals(2, feedback.size());
 		
 			
 	}
@@ -316,7 +222,6 @@ class AttemptTestJUNIT {
 	@DisplayName("Testing of addFeedback")
 	void addFeedbackTEST() throws Exception {
 		logger.info("Validation of addFeedback");
-		String message = null;
 		boolean feedback = false;
 		List<String> fedMessage = new ArrayList<>();
 		fedMessage.add("this is feedback");
@@ -325,16 +230,12 @@ class AttemptTestJUNIT {
 		//--------------------- TEST CASE 1 -----------------------------//
 		/*
 		 * In this test case we are passing a valid invalid test Id or user id then
-		 * that function is throws Exception with message "User Is Not assigned to a particular test".
+		 * that function  throws DataMismatchExcpetion with message "User Is Not assigned to a particular test".
 		 */
-				
-		 try {
-			 feedback = testService.addFeedback(fedMessage, 152, 156);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals("User Is Not assigned to a particular test", message);		
+			
+		assertThrows(DataMismatchExcpetion.class,()->{
+			testService.addFeedback(fedMessage, 152, 156);
+		 }); 	
 		
 		
 		//--------------------- TEST CASE 2 -----------------------------//
@@ -342,15 +243,9 @@ class AttemptTestJUNIT {
 		 * In this test case we are passing a valid UserId and testId then
 		 * that function return true that indicate feedback added successfully.
 		 */
-		
-		 try {
 
-			 feedback = testService.addFeedback(fedMessage, 758, 735);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals(true, feedback);
+			feedback = testService.addFeedback(fedMessage, 758, 735);
+		    assertEquals(true, feedback);
 		
 	}
 	

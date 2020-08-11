@@ -30,7 +30,7 @@ public class Test implements Serializable{
 
 	@Id
 	@Column(name = "Test_Id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long test_Id;
 	
 	@Column(name = "Test_Title")

@@ -21,7 +21,7 @@ import com.cg.onlineTest.entities.Test;
 import com.cg.onlineTest.entities.User;
 import com.cg.onlineTest.entities.User_Test;
 import com.cg.onlineTest.exceptions.NoDataFoundedException;
-import com.cg.onlineTest.exceptions.SqlInternalServerError;
+import com.cg.onlineTest.exceptions.DataMismatchExcpetion;
 
 
 /*
@@ -58,7 +58,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 		try {
 			logger.info("getAllTestAssignToPerticularUser dao method is accessed.");
 			if(!isUserExist(userId)){
-				 throw new NoDataFoundedException("No such User Exist...");
+				 throw new DataMismatchExcpetion("No such User Exist...");
 			}
 			String statement = "SELECT user FROM User_Test user WHERE User_Id=:pUser";
 			TypedQuery<User_Test> query = entityManager.createQuery(statement, User_Test.class);
@@ -78,11 +78,14 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 			return testList;
 			
 		}
+		catch(DataMismatchExcpetion exception) {
+			throw new DataMismatchExcpetion(exception.getMessage());
+		}
 		catch(NoDataFoundedException exception) {
 			throw new NoDataFoundedException(exception.getMessage());
 		}
 		catch(Exception exception) {
-			throw new SqlInternalServerError("Internal server error!");
+			throw new DataMismatchExcpetion("Internal server error!");
 		}
 		
 		
@@ -116,11 +119,14 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 			logger.info("Upcoming test data is send");
 			return updatedTestList;
 		}
+		catch(DataMismatchExcpetion exception) {
+			throw new DataMismatchExcpetion(exception.getMessage());
+		}
 		catch(NoDataFoundedException exception) {
 			throw new NoDataFoundedException(exception.getMessage()); 
 		}
 		catch(Exception exception) {
-			throw new SqlInternalServerError("Internal server error!");
+			throw new DataMismatchExcpetion("Internal server error!");
 		}
 	}
 
@@ -148,11 +154,14 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 			logger.error("No Assign test is active currently");
 			throw new NoDataFoundedException("Currently No test is Active for given user");
 		}
+		catch(DataMismatchExcpetion exception) {
+			throw new DataMismatchExcpetion(exception.getMessage());
+		}
 		catch(NoDataFoundedException exception) {
 			throw new NoDataFoundedException(exception.getMessage()); 
 		}
 		catch(Exception Exception) {
-			throw new SqlInternalServerError("Internal server error!");
+			throw new java.lang.Exception("Internal server error!");
 		}
 	}
 
@@ -255,7 +264,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 			List<User_Test> user_Test = query.getResultList();
 			if(user_Test.isEmpty()) {
 				logger.error("Wrong Feedback details");
-				throw new NoDataFoundedException("User Is Not assigned to a particular test");
+				throw new DataMismatchExcpetion("User Is Not assigned to a particular test");
 			}
 			FeedBack feedbackObject = new FeedBack();
 			feedbackObject.setFeedBackMessage(feedback);
@@ -266,8 +275,8 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 			entityManager.persist(test);
 			return true;
 		}
-		catch(NoDataFoundedException exception) {
-			throw new NoDataFoundedException(exception.getMessage());
+		catch(DataMismatchExcpetion exception) {
+			throw new DataMismatchExcpetion(exception.getMessage());
 		}
 		catch(Exception exception) {
 			throw new Exception("Internal Server Error!!");

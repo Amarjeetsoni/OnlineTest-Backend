@@ -13,7 +13,7 @@ import com.cg.onlineTest.entities.CategoryResult;
 import com.cg.onlineTest.entities.User;
 import com.cg.onlineTest.entities.User_Test;
 import com.cg.onlineTest.exceptions.NoDataFoundedException;
-import com.cg.onlineTest.exceptions.SqlInternalServerError;
+import com.cg.onlineTest.exceptions.DataMismatchExcpetion;
 
 @Repository
 public class ResultDaoImpl implements ResultDao {
@@ -40,7 +40,7 @@ public class ResultDaoImpl implements ResultDao {
 			throw new NoDataFoundedException("No Data Available in database...");
 		}
 		catch(Exception exception) {
-			throw new SqlInternalServerError("Internal server error!");
+			throw new DataMismatchExcpetion("Internal server error!");
 		}
 	}
 
@@ -63,7 +63,7 @@ public class ResultDaoImpl implements ResultDao {
 			throw new NoDataFoundedException("No Data Available in database...");
 		}
 		catch(Exception exception) {
-			throw new SqlInternalServerError("Internal server error!");
+			throw new DataMismatchExcpetion("Internal server error!");
 		}
 	}
 

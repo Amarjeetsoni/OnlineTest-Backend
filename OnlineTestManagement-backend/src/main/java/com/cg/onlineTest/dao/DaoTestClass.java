@@ -3,6 +3,7 @@ package com.cg.onlineTest.dao;
 
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +37,7 @@ public class DaoTestClass {
 	private EntityManager entityManager;
 	
 	public boolean AddUser(User user) {
+		System.out.println("Here In the adduser data");
 		entityManager.persist(user);
 		return true;
 	}
@@ -91,31 +93,45 @@ public class DaoTestClass {
 			logger.error("User id Or Test Id Is Invalid...-----------------------------------------");
 			throw new NoDataFoundedException("User id Or Test Id Is Invalid...");
 		}
-		
-		List<Test> testList = onlineTestDao.getAllTestAssignToPerticularUser(userId);
-		Timestamp testStartDate = test.getStartDate();
-		Timestamp testEndDate = test.getEndDate();
-		
-		for(Test testObject: testList) {
-			Timestamp assignedTestStartDate = testObject.getStartDate();
-			Timestamp assignedTestEndDate = testObject.getEndDate();
-			int firstCompare = testEndDate.compareTo(assignedTestStartDate);
-			int secondCompare = assignedTestEndDate.compareTo(testStartDate);
-			
-			if(firstCompare > 0 && secondCompare > 0) {
-				continue;
-			}
-			else {
-				logger.error("In the given slot user has assigned in another test...");
-				throw new Exception("In the given slot user has assigned in another test...");
-			}
-			
+		List<Test> testList = new ArrayList<>();
+		String message = null;
+		try {
+		testList = onlineTestDao.getAllTestAssignToPerticularUser(userId);
 		}
+		catch(Exception exception) {
+			message = exception.getMessage();
+		}
+		logger.info("-----------------------------------------" + message);
+		if(message==null || message.equals("No Test Assigned to particular User...")) {
+			System.out.println("-----------------------------");
+			Timestamp testStartDate = test.getStartDate();
+			Timestamp testEndDate = test.getEndDate();
+			System.out.println("-----------------------------");
+			for(Test testObject: testList) {
+				Timestamp assignedTestStartDate = testObject.getStartDate();
+				Timestamp assignedTestEndDate = testObject.getEndDate();
+				int firstCompare = testEndDate.compareTo(assignedTestStartDate);
+				int secondCompare = assignedTestEndDate.compareTo(testStartDate);
+				
+				if(firstCompare > 0 && secondCompare > 0) {
+					continue;
+				}
+				else {
+					logger.error("In the given slot user has assigned in another test...");
+					throw new Exception("In the given slot user has assigned in another test...");
+				}
+				
+			}
+			logger.error("--------------------------------------------------------------------");
+			User_Test usertest = new User_Test(user, test, 0, false, 0);
+			logger.error("--------------------------------------------------------------------");
+			test.addUserTestDetails(usertest);
+			entityManager.merge(usertest);
+			return true;
+		}
+		System.out.println(message + " <-<-<-<-<-");
+		throw new Exception(message);
 		
-		User_Test usertest = new User_Test(user, test, 0, false, 0);
-		test.addUserTestDetails(usertest);
-		entityManager.merge(usertest);
-		return true;
 		}
 		catch(NoDataFoundedException exception) {
 			throw new NoDataFoundedException(exception.getMessage());
@@ -143,19 +159,24 @@ public class DaoTestClass {
 	}
 	
 	public boolean addCategory(Category cat) {
+		try {
 		entityManager.persist(cat);
+		}
+		catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
 		return true;
 	}
 	
 	
 	
-	public boolean addCategory(long var, long catId, long testId) {
+	public boolean addCategory(long var, long testId) {
 		Question ques = entityManager.find(Question.class, var);
-		Category cat = entityManager.find(Category.class, catId);
+//		Category cat = entityManager.find(Category.class, catId);
 		Test test = entityManager.find(Test.class, testId);
-		cat.addQuestion(ques);
+//		cat.addQuestion(ques);
 		test.addQuestion(ques);
-		entityManager.merge(cat);
+//		entityManager.merge(cat);
 		entityManager.merge(test);
 	    entityManager.merge(ques);
 		return true;

@@ -48,10 +48,12 @@ public class CheckTableDataController {
 	public ResponseEntity<Object> registerUser(@RequestBody NewUser user){
 		try {
 			   User adduser = new User();
+			   adduser.setUserId(user.userId);
 			   adduser.setUserName(user.userName);
 			   adduser.setAdmin(user.isAdmin);
 			   adduser.setEmailId(user.emailId);
 			   adduser.setUserPassword(user.userPassword);
+			   System.out.println("Data is about to go");
 		       dao.AddUser(adduser);
 		       return new ResponseEntity<Object>("User Data Saved in database", HttpStatus.OK);
 		}
@@ -67,6 +69,7 @@ public class CheckTableDataController {
 	public ResponseEntity<Object> registertest(@RequestBody NewTest user){
 		try {
 			   Test addTest = new Test();
+			   addTest.setTest_Id(user.testId);
 			   addTest.setTestTitle(user.testTitle);
 			   addTest.setTestDuration(user.testDuration);
 			   addTest.setTestTotalMarks(user.testTotalMarks);
@@ -102,6 +105,7 @@ public class CheckTableDataController {
 	public ResponseEntity<Object> addcategory(@RequestBody Stringclass Name){
 	   try {
 		    Category cat = new Category();
+		    cat.setCategoryId(Name.catId);
 		    cat.setName(Name.name);
 		    dao.addCategory(cat);
 		    return new ResponseEntity<Object>("category Saved in database", HttpStatus.OK);
@@ -129,11 +133,10 @@ public class CheckTableDataController {
 		}
 	}
 	
-	@PostMapping("/addCategoryTest")
-	public ResponseEntity<Object> addCategoryQuetion(@RequestBody addCategory cat){
+	@PostMapping("/setTestQuestion")
+	public ResponseEntity<Object> setTestQuetion(@RequestBody addCategory cat){
 		try {
-			System.out.println(cat.question_id + " " + cat.category_id);
-			dao.addCategory(cat.question_id, cat.category_id, cat.test_id);
+			dao.addCategory(cat.question_id, cat.test_id);
 			return new ResponseEntity<Object>("category and test added for question", HttpStatus.OK);
 		}
 		catch(Exception exception){
@@ -227,6 +230,7 @@ public class CheckTableDataController {
 }
 
 class NewUser{
+	public long userId;
 	public String userName;
 	public boolean isAdmin;
 	public String userPassword;
@@ -234,6 +238,7 @@ class NewUser{
 }
 
 class NewTest{
+	public long testId;
 	public String testTitle;
 	public long testDuration;
 	public long testTotalMarks;
@@ -249,6 +254,7 @@ class Testclass{
 }
 
 class Stringclass{
+	public long catId;
 	public String name;
 }
 
@@ -263,7 +269,6 @@ class Options{
 class addCategory{
 	public long test_id;
 	public long question_id;
-	public long category_id;
 }
 
 class TestDetails{

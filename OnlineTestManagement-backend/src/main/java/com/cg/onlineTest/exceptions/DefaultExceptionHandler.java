@@ -16,7 +16,7 @@ public class DefaultExceptionHandler  extends ResponseEntityExceptionHandler{
 	return new ResponseEntity<Object>(new ErrorMessage(HttpStatus.NO_CONTENT, exception.getMessage()), HttpStatus.NOT_ACCEPTABLE);
 	}
 
-	@ExceptionHandler(SqlInternalServerError.class)
+	@ExceptionHandler(DataMismatchExcpetion.class)
 	public final ResponseEntity<Object> checkAddAccountDetails(Exception exception){
 		return new ResponseEntity<Object>(new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}

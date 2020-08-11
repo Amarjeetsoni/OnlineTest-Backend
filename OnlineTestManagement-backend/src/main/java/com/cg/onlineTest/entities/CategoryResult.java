@@ -1,5 +1,7 @@
 package com.cg.onlineTest.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "CATEGORY_RESULT_TAB")
-public class CategoryResult {
+public class CategoryResult implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
