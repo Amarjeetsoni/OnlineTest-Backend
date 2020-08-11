@@ -66,7 +66,7 @@ public class GetResultController {
 	    return new ResponseEntity<Object>("User Founded... and Test Assigned", HttpStatus.OK);
 		}
 		catch(Exception exception) {
-			return new ResponseEntity<Object>("Not Founded...", HttpStatus.BAD_GATEWAY);
+			return new ResponseEntity<Object>("Somting Wents wrong...", HttpStatus.BAD_GATEWAY);
 		}
 	    
 	}

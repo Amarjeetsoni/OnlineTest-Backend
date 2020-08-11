@@ -1,7 +1,7 @@
 package com.cg.onlineTest.controller;
 
 import java.sql.Timestamp;
-import java.util.Date;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +53,13 @@ public class TestController {
 		Test test1=new Test();
 		
 		test1.setTestTitle(test.testTitle);
-		Date date=new Date();
-		long time=date.getTime();
-//		Timestamp ts=new Timestamp(time);
 		
 		test1.setTestTotalMarks(test.testTotalMarks);
+		Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+		int number = test.startDate.compareTo(timeStamp);
+		if(number < 0) {
+			throw new TestDataInvalidException("Invalid Start Date... Start date must be greater then current date");
+		}
 		
 		if(service.getAllTitles().contains(test.testTitle))
 			throw new TestDataInvalidException("title already exists");
@@ -123,7 +125,6 @@ public class TestController {
 		public String testTitle;
 		public long testDuration;
 		public long testTotalMarks;
-//		public long totalQuestion;
 		public long TotalQuestion;
 		public Timestamp startDate;
 		public Timestamp endDate;

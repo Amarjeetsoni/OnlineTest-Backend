@@ -209,7 +209,7 @@ public class GetResultDaoImpl implements GetResultDao {
 					}
 					else {
 						logger.error("In the given slot user has assigned in another test...");
-						throw new Exception("In the given slot user has assigned in another test...");
+						throw new NoDataFoundedException("In the given slot user has assigned in another test...");
 					}
 					
 				}
@@ -225,7 +225,7 @@ public class GetResultDaoImpl implements GetResultDao {
 				throw new NoDataFoundedException(exception.getMessage());
 			}
 			catch(Exception exception) {
-				throw new Exception("Internal Server Error..");
+				throw new Exception("Internal Server Error...");
 			}
 	}
 

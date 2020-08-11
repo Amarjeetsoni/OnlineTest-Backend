@@ -9,26 +9,26 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.cg.onlineTest.entities.User;
 import com.cg.onlineTest.entities.User_Test;
-import com.cg.onlineTest.services.ResultAnalysisService;
+import com.cg.onlineTest.services.ResultService;
 
 @SpringBootTest
 class ResultAnalysisTESTING {
 
 	@Mock
-	ResultAnalysisService resultAnalysisService;
+	ResultService resultAnalysisService;
 	
 	@Test
-	void testGetResult() {
+	void testGetResult() throws Exception {
 		User user = new User();
-		when(resultAnalysisService.getResult(user)).thenReturn(null);
-		assertEquals(null, resultAnalysisService.getResult(user));
+		when(resultAnalysisService.getResult(101L)).thenReturn(null);
+		assertEquals(null, resultAnalysisService.getResult(101L));
 	}
 
 	@Test
-	void testCategoryAnalysis() {
+	void testCategoryAnalysis() throws Exception {
 		User_Test userTest = new User_Test();
-		when(resultAnalysisService.getCategoryAnalysis(userTest)).thenReturn(null);
-		assertEquals(null, resultAnalysisService.getCategoryAnalysis(userTest));
+		when(resultAnalysisService.getCategoryResult(101L)).thenReturn(null);
+		assertEquals(null, resultAnalysisService.getCategoryResult(101L));
 	}
 
 }
