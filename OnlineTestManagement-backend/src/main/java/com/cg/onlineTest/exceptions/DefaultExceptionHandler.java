@@ -26,7 +26,10 @@ public class DefaultExceptionHandler  extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<Object>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
-	
+	@ExceptionHandler(CannotRetrieveDataException.class)
+	public final ResponseEntity<Object> retrieveData(Exception exception){
+		return new ResponseEntity<Object>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 	
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> internalServerError(Exception exception){
