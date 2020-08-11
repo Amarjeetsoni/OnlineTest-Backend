@@ -2,13 +2,14 @@ package com.cg.onlineTest;
 
 
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+//import static org.mockito.Mockito.times;
+//import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.cg.onlineTest.exceptions.TestDataInvalidException;
 import com.cg.onlineTest.services.TestService;
 
 @SpringBootTest
@@ -18,7 +19,7 @@ class TestTESTING {
 	TestService dao;
 	
 	@Test
-	public void deleteTest() 
+	public void deleteTest() throws TestDataInvalidException 
 	{
 		
 		long test_Id=500;

@@ -4,12 +4,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
 
 @ControllerAdvice
 public class DefaultExceptionHandler  extends ResponseEntityExceptionHandler{
+	@ExceptionHandler({DateInvalidException.class})
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage badRequest(Exception e)
+	{
+		return new ErrorMessage(null, e.getMessage());
+	}
+
+	@ExceptionHandler({TestDataInvalidException.class})
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage badRequest1(Exception e)
+	{
+		return new ErrorMessage(null, e.getMessage());
+	}
 	
 	@ExceptionHandler(NoDataFoundedException.class)
 	public final ResponseEntity<Object> checkLoginCredentials(Exception exception){
@@ -26,7 +41,10 @@ public class DefaultExceptionHandler  extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<Object>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
-	
+	@ExceptionHandler(CannotRetrieveDataException.class)
+	public final ResponseEntity<Object> retrieveData(Exception exception){
+		return new ResponseEntity<Object>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 	
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> internalServerError(Exception exception){

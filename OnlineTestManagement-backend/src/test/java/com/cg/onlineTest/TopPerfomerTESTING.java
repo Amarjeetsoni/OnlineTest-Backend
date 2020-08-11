@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.cg.onlineTest.exceptions.CannotRetrieveDataException;
 import com.cg.onlineTest.services.TopPerformerService;
 
 @SpringBootTest
@@ -16,21 +17,21 @@ class TopPerfomerTESTING {
 	TopPerformerService dao;
 	
 	@Test
-	void testGetTopPerformer() {
+	void testGetTopPerformer() throws Exception {
 		when(dao.topPerformers()).thenReturn(null);
 		assertEquals(null, dao.topPerformers());
 	}
 	
 	@Test
-	void testGetTotalUsers() {
-		when(dao.getTotalUsers()).thenReturn(10);
+	void testGetTotalUsers() throws CannotRetrieveDataException {
+		when(dao.getTotalUsers()).thenReturn(10L);
 		assertEquals(10, dao.getTotalUsers());
 	}
 	
 	@Test
-	void testGetActiveUsers() {
-		when(dao.getActiveUsers()).thenReturn(8);
-		assertEquals(8, dao.getActiveUsers());
+	void testGetActiveUsers() throws CannotRetrieveDataException {
+		when(dao.getTotalQuestions()).thenReturn(8L);
+		assertEquals(8, dao.getTotalQuestions());
 	}
 
 }

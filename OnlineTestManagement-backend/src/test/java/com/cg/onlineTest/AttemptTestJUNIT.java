@@ -4,6 +4,7 @@ package com.cg.onlineTest;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,7 +133,8 @@ class AttemptTestJUNIT {
 	@DisplayName("Testing of getActiveTest")
 	void getActiveTestTEST() throws Exception {
 		logger.info("Validation of Active Test");
-		com.cg.onlineTest.entities.Test test = null;
+		com.cg.onlineTest.entities.Test testPredefined = new com.cg.onlineTest.entities.Test();
+		testPredefined.setTestTitle("Title of test");
 		
 		
 		//--------------------- TEST CASE 1 -----------------------------//
@@ -151,9 +153,7 @@ class AttemptTestJUNIT {
 		 * that function return test Details we are checking Test Title
 		 */
 		
-	    
-		 test = testService.getActiveTest(4);
-		 assertEquals("Title of test", test.getTestTitle());
+		 assertEquals("Title of test", testService.getActiveTest(4).getTestTitle());
 		
 	}
 	
@@ -254,24 +254,19 @@ class AttemptTestJUNIT {
 	@DisplayName("Testing of submitTest")
 	void submitTestTEST() throws Exception {
 		logger.info("Validation of submitTest");
-		String message = null;
 		List<Integer> answers = new ArrayList<>();
 		answers.add(1);
 		answers.add(2);
 		
 		//--------------------- TEST CASE 1 -----------------------------//
 		/*
-		 * In this test case we are passing a valid invalid test Id or user id then
-		 * that function is throws Exception with message "User Details or test Details mismatch!".
+		 * In this test case we are passing a invalid test Id or user id then
+		 * that function throws NoDataFoundedException with message "User Details or test Details mismatch!".
 		 */
-				
-		 try {
-			 testService.submitTest(answers, 152, 156);
-		}
-		catch(NoDataFoundedException exception) {
-			message = exception.getMessage();
-		}
-		assertEquals("User Details or test Details mismatch!", message);		
+		assertThrows(NoDataFoundedException.class,()->{
+			testService.submitTest(answers, 152, 156);
+		 }); 	
+	    		
 		
 	}
 

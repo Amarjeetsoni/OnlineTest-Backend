@@ -74,6 +74,22 @@ public class User_Test {
 
 
 
+	
+	
+	public long getMarksScored() {
+		return marksScored;
+	}
+
+
+
+
+	public void setMarksScored(long marksScored) {
+		this.marksScored = marksScored;
+	}
+
+
+
+
 	public long getTotalAttempt() {
 		return totalAttempt;
 	}

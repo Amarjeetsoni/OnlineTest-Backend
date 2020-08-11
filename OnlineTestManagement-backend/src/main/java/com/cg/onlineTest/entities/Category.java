@@ -20,7 +20,7 @@ public class Category implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "Category_Id")
 	private long categoryId;
 	
