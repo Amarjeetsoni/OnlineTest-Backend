@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.cg.onlineTest.entities.User;
-import com.cg.onlineTest.entities.User_Test;
 import com.cg.onlineTest.services.GetResultService;
 
 @SpringBootTest
@@ -17,29 +15,34 @@ class GetResultTESTING {
 	@Mock
 	GetResultService dao;
 	
+	
 	@Test
-	void testGetResult()
+	void testGetUpcomingTest() throws Exception
 	{
-		User user=new User();
-		when(dao.getResult(user)).thenReturn(null);
-		assertEquals(null, dao.getResult(user));
+		when(dao.getUpcomingTest(0)).thenReturn(null);
+		assertEquals(null, dao.getUpcomingTest(0));
 	}
 	
 	@Test
-	void testActiveTest()
+	void testActiveTest() throws Exception
 	{
-		com.cg.onlineTest.entities.Test test=new com.cg.onlineTest.entities.Test();
-		when(dao.activeTest(test)).thenReturn(null);
-		assertEquals(null, dao.activeTest(test));
+		when(dao.getActiveTest(1)).thenReturn(null);
+		assertEquals(null, dao.getActiveTest(1));
 		
 	}
 	
 	@Test
-	void testAssignedTest()
+	void testAssignedTest() throws Exception
 	{
-		User_Test userTest=new User_Test();
-		when(dao.getAssignedTest(userTest)).thenReturn(null);
-		assertEquals(null, dao.getAssignedTest(userTest));
+		when(dao.getAssignedTest(2)).thenReturn(null);
+		assertEquals(null, dao.getAssignedTest(2));
+	}
+	
+	@Test
+	void testAssignTest() throws Exception
+	{
+		when(dao.assignTest(101, 102)).thenReturn(null);
+		assertEquals(null, dao.assignTest(101, 102));
 	}
 
 }

@@ -83,14 +83,14 @@ public class DaoTestClass {
 		query.setParameter("pTest", testId);
 		List<User_Test> user_Test = query.getResultList();
 		if(!user_Test.isEmpty()) {
-			logger.error("User Is assigned in that perticular test already...------------------------------------------");
+			logger.error("User Is assigned in that perticular test already...");
 			throw new NoDataFoundedException("User Is assigned in that perticular test already...");
 		}
 		
 		Test test = entityManager.find(Test.class, testId);
 		User user = entityManager.find(User.class, userId);
 		if(test == null || user == null) {
-			logger.error("User id Or Test Id Is Invalid...-----------------------------------------");
+			logger.error("User id Or Test Id Is Invalid...");
 			throw new NoDataFoundedException("User id Or Test Id Is Invalid...");
 		}
 		List<Test> testList = new ArrayList<>();
@@ -101,12 +101,10 @@ public class DaoTestClass {
 		catch(Exception exception) {
 			message = exception.getMessage();
 		}
-		logger.info("-----------------------------------------" + message);
 		if(message==null || message.equals("No Test Assigned to particular User...")) {
-			System.out.println("-----------------------------");
+
 			Timestamp testStartDate = test.getStartDate();
 			Timestamp testEndDate = test.getEndDate();
-			System.out.println("-----------------------------");
 			for(Test testObject: testList) {
 				Timestamp assignedTestStartDate = testObject.getStartDate();
 				Timestamp assignedTestEndDate = testObject.getEndDate();
@@ -122,14 +120,11 @@ public class DaoTestClass {
 				}
 				
 			}
-			logger.error("--------------------------------------------------------------------");
 			User_Test usertest = new User_Test(user, test, 0, false, 0);
-			logger.error("--------------------------------------------------------------------");
 			test.addUserTestDetails(usertest);
 			entityManager.merge(usertest);
 			return true;
 		}
-		System.out.println(message + " <-<-<-<-<-");
 		throw new Exception(message);
 		
 		}

@@ -25,7 +25,7 @@ public class Question implements Serializable{
 	
 	@Id
 	@Column(name = "Question_Id")
-//	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long questionId;
 	
 	@ElementCollection  
