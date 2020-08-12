@@ -7,10 +7,9 @@ import com.cg.onlineTest.entities.Question;
 
 public interface QuestionTestService {
 	public Boolean addQuestion(Question ques, long cat_id);
-	public List<Question> retrieveAllQuestion();
+	public List<Question> getAllQuestion();
 	public Boolean deleteQuestion(Long questionId);
-	public Boolean updateQuestion(Question question);
-	void populateQuestionsData();
 	public boolean addCategory(Category category);
+	public boolean updateQuestion(long questionId, String questionTitle, int questionAnswer, long questionMarks);
 
 }

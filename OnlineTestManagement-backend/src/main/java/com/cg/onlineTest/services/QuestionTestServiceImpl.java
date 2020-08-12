@@ -18,79 +18,88 @@ import com.cg.onlineTest.entities.Question;
 public class QuestionTestServiceImpl implements QuestionTestService {
 
 	@Autowired
-	QuestionTestDao dao;
+	QuestionTestDao questionDao;
 	
 //	public QuestionTestServiceImpl() {
 //		populateQuestionsData();
 //	}
 //	
+	
+	/*
+	  Method - getAllQuestions
+  Description - To fetch all Question Details from the Question Table in database.
+  @param from deleteQuestion   - questionId of the question. 
+  Created By                   - K Sai Deepika                          
+	 */
+	
 	@Override
-	public List<Question> retrieveAllQuestion() {
+	public List<Question> getAllQuestion() {
 		// TODO Auto-generated method stub
-		return dao.getAllQuestions();
+		return questionDao.getAllQuestions();
 	}
 
+	
+	/*
+	 Method - deleteQuestion
+   Description - To Delete Question from Question Table in database.
+	 @param from deleteQuestion   - questionId of the question.
+   Created By                - K Sai Deepika                           
+	 */
+	
+	
 	@Override
 	public Boolean deleteQuestion(Long questionId) {
 		// TODO Auto-generated method stub
-		return dao.deleteQuestion(questionId);
+		 questionDao.deleteQuestion(questionId);
+		 return true;
 	}
+
+	
+	/*
+	 * 	 Method - updateQuestion
+     Description - To Update or modify Question in Question Table in database.
+	 @param from updateQuestion   - questionId of the question.
+	 @returns List<Question>      - returns true if Question gets updated Successfully. 
+	 @throws QuestionrException  - It is raised if question details are not given properly. 
+     Created By                -K Sai Deepika
+	 */
+	
+
 
 	@Override
-	public Boolean updateQuestion(Question question) {
+	public boolean updateQuestion(long questionId, String questionTitle, int questionAnswer, long questionMarks) {
+		questionDao.updateQuestion(questionId,questionTitle,questionAnswer,questionMarks);
+		return true; 
 		
-		return dao.updateQuestion(question);
 	}
 
+	/*
+	 Method - addQuestion
+     Description - To Add Question into the Question Table in database.
+	 @param from addQuestion   - Question Object Containing Question Details.
+	 @returns Boolean          - true
+	 @throws AddQuestionrException  - It is raised if Question Details are not given properly. 
+     Created By                -k Sai Deepika                         
+	 */
+	
 	@Override
 	public Boolean addQuestion(Question question, long cat_id) {
 		
-		return dao.addQuestion(question, cat_id);
+		return questionDao.addQuestion(question, cat_id);
 	}
 
-//	@Override
-//	public void populateQuestionsData()
-//	{
-//		Category category = new Category();
-////		category.setCategoryId(1);
-////		category.setName("Core Java");
-////		dao.addCategory(category);
-//		category.setCategoryId(2);
-//		category.setName("Spring");
-//		dao.addCategory(category);
-////		category.setCategoryId(3);
-////		category.setName("SQL");
-////		dao.addCategory(category);
-////		category.setCategoryId(4);
-////		category.setName("JPA Hibernate");
-////		dao.addCategory(category);
-////		
-//		Set<String> options = null;
-//		
-//		Question question = new Question();
-//		question.setQuestionId(2);
-//		question.setQuestionCategory(dao.getCategory((long)1));
-//		question.setQuestionTitle("The sum of all two digit numbers divisible by 5 is");
-//		options.add("945");options.add("678");options.add("439");options.add("568");
-//		question.setQuestionOptions(options);
-//		question.setQuestionMarks(2);
-//		question.setQuestionAnswer(4);
-//		dao.addQuestion(question);
-//		options.clear();
-//		
-//		
-////		use the same way to create 40 questions.. or 80 your wish, 4 categories are being used 
-////		take care of question Id ... no need to create any more objects
-//	}
-
+	
+	/*
+	  Method - getCategory
+Description - To fetch category from the Category Table in database.
+ @param from categoryId   - categoryId of the Category.
+Created By                   - K Sai Deepika                          
+	 */
+	
 	@Override
 	public boolean addCategory(Category category) {
-		return dao.addCategory(category);
+		return questionDao.addCategory(category);
 	}
 
-	@Override
-	public void populateQuestionsData() {
-		// TODO Auto-generated method stub
-		
-	}
+
 }

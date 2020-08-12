@@ -8,8 +8,7 @@ import com.cg.onlineTest.entities.Question;
 public interface QuestionTestDao {
 
 	Boolean addQuestion(Question question, long cat_id);
-	
-	Boolean updateQuestion(Question question);
+
 	
 	Boolean deleteQuestion(Long questionId);
 	
@@ -18,4 +17,6 @@ public interface QuestionTestDao {
 	Boolean addCategory(Category category);
 	
 	Category getCategory(Long categoryId);
+
+	boolean updateQuestion(long QuestionId, String questionTitle, int questionAnswer, long questionMarks);
 }
