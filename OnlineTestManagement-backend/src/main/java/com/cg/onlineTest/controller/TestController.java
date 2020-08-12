@@ -58,12 +58,14 @@ public class TestController {
 		Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 		int number = test.startDate.compareTo(timeStamp);
 		if(number < 0) {
+			System.out.println("Invalid Start Date... Start date must be greater then current date");
 			throw new TestDataInvalidException("Invalid Start Date... Start date must be greater then current date");
 		}
 		
-		if(service.getAllTitles().contains(test.testTitle))
+		if(service.getAllTitles().contains(test.testTitle)) {
+			System.out.println("Test Title already exist...");
 			throw new TestDataInvalidException("title already exists");
-		
+		}
 		test1.setTestDuration(test.testDuration);
 		if(test1.getTestDuration()<=0)
 			throw new TestDataInvalidException("Test Duration can not be negative");
@@ -90,7 +92,7 @@ public class TestController {
 	@DeleteMapping(value="delete/{test_Id}")
 	public String deleteTest(@PathVariable long test_Id) throws TestDataInvalidException
 	{
-		
+		System.out.println("In the delete Test");
 		service.deleteTest(test_Id);
 		return "test deleted successfully";
 		

@@ -266,6 +266,10 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 				logger.error("Wrong Feedback details");
 				throw new DataMismatchExcpetion("User Is Not assigned to a particular test");
 			}
+			if(!user_Test.get(0).isAttempted()) {
+				logger.error("User Does Not Attempted the test.");
+				throw new DataMismatchExcpetion("User Does Not Attempted the test.");
+			}
 			FeedBack feedbackObject = new FeedBack();
 			feedbackObject.setFeedBackMessage(feedback);
 			feedbackObject.setUser_id(userId);

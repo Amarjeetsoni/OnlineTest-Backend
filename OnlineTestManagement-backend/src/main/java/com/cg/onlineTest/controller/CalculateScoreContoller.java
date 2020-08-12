@@ -40,7 +40,9 @@ public class CalculateScoreContoller {
 	@GetMapping("getScore/{userTestId}")
 	public Long getTestScore(@PathVariable Long userTestId) throws Exception{
 		logger.info("Controller called for calculating score...");   
-		return calculateService.calculateScoreService(userTestId);
+		Long totalMarks =  calculateService.calculateScoreService(userTestId);
+		System.out.println(totalMarks);
+		return totalMarks;
 	}
 	
 	

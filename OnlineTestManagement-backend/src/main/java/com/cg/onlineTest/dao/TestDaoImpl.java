@@ -39,16 +39,20 @@ public class TestDaoImpl implements TestDao {
  * this method implements the delete functionality i.e specific test id will be searched 
  * found id will be deleted and then corresponding test will be deleted from database
  */
+	@SuppressWarnings("unused")
 	@Override
 	public void deleteTest(long test_Id) throws TestDataInvalidException 
 	{
 		Test test6=entityManager.find(Test.class, test_Id);
+		if(test6.getAllQuestion().size() > 0) {
+			System.out.println("Some Quetions are there so You can only modify the test.");
+			throw new TestDataInvalidException("Some Quetion add to the test so You can only modify the test.");
+		}
 	
 		if(test6!=null)
 		{
 			entityManager.remove(test6);
 		}
-		
 		else
 			throw new TestDataInvalidException("id does not exist");
 	}

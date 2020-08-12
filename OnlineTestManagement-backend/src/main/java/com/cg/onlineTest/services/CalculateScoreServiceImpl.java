@@ -74,7 +74,8 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 		calculateDao.setScore(userTest);
 		logger.info("Method executed to calculate score");
 		categoryScore(userTest);
-		return userTest.getMarksScored();
+		System.out.println(score);
+		return score;
 	}
 
 

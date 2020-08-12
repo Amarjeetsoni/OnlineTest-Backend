@@ -10,7 +10,6 @@ import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +27,6 @@ public class GetResultDaoImpl implements GetResultDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	
-	@Autowired
-	private OnlineTestDao onlineTestDao; 
 	
 	Logger logger = LoggerFactory.getLogger(OnlineTestDaoImpl.class);
 
@@ -152,7 +148,6 @@ public class GetResultDaoImpl implements GetResultDao {
 				logger.error("User Is assigned in that perticular test already...");
 				throw new NoDataFoundedException("User Is assigned in that perticular test already...");
 			}
-			
 			Test test = entityManager.find(Test.class, testId);
 			User user = entityManager.find(User.class, userId);
 			if(test == null || user == null) {
@@ -160,39 +155,35 @@ public class GetResultDaoImpl implements GetResultDao {
 				throw new NoDataFoundedException("User id Or Test Id Is Invalid...");
 			}
 			List<Test> testList = new ArrayList<>();
-			String message = null;
-			try {
-			testList = onlineTestDao.getAllTestAssignToPerticularUser(userId);
-			}
-			catch(Exception exception) {
-				message = exception.getMessage();
-			}
-			if(message==null || message.equals("No Test Assigned to particular User...")) {
+			testList = getAllTestAssign(userId);
 
 				Timestamp testStartDate = test.getStartDate();
 				Timestamp testEndDate = test.getEndDate();
 				for(Test testObject: testList) {
 					Timestamp assignedTestStartDate = testObject.getStartDate();
 					Timestamp assignedTestEndDate = testObject.getEndDate();
-					int firstCompare = testEndDate.compareTo(assignedTestStartDate);
-					int secondCompare = assignedTestEndDate.compareTo(testStartDate);
-					
-					if(firstCompare > 0 && secondCompare > 0) {
-						continue;
+					int firstCompare = assignedTestStartDate.compareTo(testEndDate);
+					int secondCompare = testEndDate.compareTo(assignedTestEndDate);
+					int thirdCompare = assignedTestStartDate.compareTo(testStartDate);
+					int fourthCompare = testStartDate.compareTo(assignedTestEndDate);
+					int fifthcompare =  testStartDate.compareTo(assignedTestStartDate);
+					int sixthCompare  = assignedTestEndDate.compareTo(testEndDate);
+					System.out.println(firstCompare + " " + secondCompare + " " + " " + thirdCompare + " " + fourthCompare + " " + fifthcompare + " " + sixthCompare);
+					if((firstCompare > 0 && secondCompare > 0) || (thirdCompare > 0 && fourthCompare > 0) || (fifthcompare > 0 && sixthCompare > 0)) {
+						logger.error("In the given slot user has assigned in another test...");
+						System.out.println(assignedTestStartDate + " " + testStartDate + "\n" + assignedTestEndDate + " " + testEndDate);
+						throw new NoDataFoundedException("In the given slot user has assigned in another test...");
 					}
 					else {
-						logger.error("In the given slot user has assigned in another test...");
-						throw new NoDataFoundedException("In the given slot user has assigned in another test...");
+						continue;
 					}
 					
 				}
 				User_Test usertest = new User_Test(user, test, 0, false, 0);
 				test.addUserTestDetails(usertest);
 				entityManager.merge(usertest);
+				logger.info("Test Assign successfully");
 				return true;
-			}
-			throw new Exception(message);
-			
 			}
 			catch(NoDataFoundedException exception) {
 				throw new NoDataFoundedException(exception.getMessage());
