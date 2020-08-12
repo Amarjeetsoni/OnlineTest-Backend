@@ -1,35 +1,46 @@
 package com.cg.onlineTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.aspectj.weaver.loadtime.Options;
+import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.cg.onlineTest.controller.QuestionTestController;
+import com.cg.onlineTest.dao.QuestionTestDao;
+import com.cg.onlineTest.dao.QuestionTestDaoImpl;
+import com.cg.onlineTest.entities.Category;
+import com.cg.onlineTest.entities.Question;
+
+import com.cg.onlineTest.services.QuestionTestService;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import javax.transaction.Transactional;
 
-import com.cg.onlineTest.controller.QuestionTestController;
-import com.cg.onlineTest.dao.QuestionTestDao;
+//import org.springframework.boot.test.context.SpringBootTest;
 
-import com.cg.onlineTest.entities.Category;
-import com.cg.onlineTest.entities.Question;
-import com.cg.onlineTest.services.QuestionTestService;
-
-
-
+@RunWith(SpringRunner.class)
 @SpringBootTest
-class QuestionTestTESTING {
+@Transactional
+//@RunWith(MockitoJUnitRunner.class)
 
-	//QuestionDao dao;
+
+public class QuestionTestTESTING {
+
 	@Mock
 	private QuestionTestDao questionDao;
 	
@@ -56,11 +67,15 @@ class QuestionTestTESTING {
 		assertEquals(null, questionDao.deleteQuestion(1L));
 	}
 	
-//	@Test
-//	 public void testUpdateQuestion() {
-//		when(questionDao.updateQuestion(1L, "New Question title", ["option 1", "option 2"], 2, 10L, ["1", "name"]).thenReturn(true);
-//		assertEquals(true, questionDao.updateQuestion(1L, "please insert Question number 1 with title","option 1" , 2, 10, 101L)));
-//	}
+	@Test
+	 public void testUpdateQuestion() {
+		Set<String> options = new HashSet<String>();
+		options.add("945");options.add("678");options.add("439");options.add("568");
+		category.setCategoryId(1);
+		category.setName("Java");
+		when(questionDao.updateQuestion(1L,"please insert Question number 1 with title",options,3,10L,category)).thenReturn(true);
+		assertEquals(true, questionDao.updateQuestion(1L,"please insert Question number 1 with title",options,3,10L,category));
+	}
 
 	
 	@Test
@@ -69,7 +84,12 @@ class QuestionTestTESTING {
 		when(questionDao.addCategory(category)).thenReturn(null);
 		assertEquals(null, questionDao.addCategory(category));
 	}
-
+	
+	
+	
+	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	Logger logger = LoggerFactory.getLogger(QuestionTestController.class);
@@ -79,10 +99,12 @@ class QuestionTestTESTING {
 	@Autowired 
 	QuestionTestService questionServiceObject;
 	
-
+	private QuestionTestDao questionTestDao = new QuestionTestDaoImpl();
 	
 	Question question = new Question();
 	Category category = new Category();
+	Set<String> option = new HashSet<String>();
+	Options optionss = new Options();
 	
 	
 	
@@ -139,6 +161,7 @@ class QuestionTestTESTING {
 		question.setQuestionMarks(2);
 		question.setQuestionAnswer(4);
 		
+		
 		Boolean message= true;
 		logger.info("Validation to delete a  Question From Database");
 		 Boolean result = questionServiceObject.deleteQuestion(2L);
@@ -183,22 +206,20 @@ class QuestionTestTESTING {
 	 */
 	
 	
-//	@Test
-//	public void testtUpdateQuestion() throws Exception {
-//		question.setQuestionId(2);
-//		question.setQuestionTitle("The sum of all two digit numbers divisible by 5 is");
-//		question.setQuestionMarks(2);
-//		question.setQuestionAnswer(4);
-//		
-//		Boolean message= true;
-//		logger.info("Validation to Add a  Question From Database");
-//		 boolean result = questionServiceObject.updateQuestion(1L,"please insert Question number 1 with title",3,10L);
-//		
-//		assertEquals(result, message);		
-//		
-//		
-//		
-//	}
+	@Test
+	public void testtUpdateQuestion() throws Exception {
+		Set<String> options = new HashSet<String>();
+		options.add("945");options.add("678");options.add("439");options.add("568");
+		
+		Boolean message= true;
+		logger.info("Validation to Add a  Question From Database");
+		 boolean result = questionServiceObject.updateQuestion(1L,"please insert Question number 1 with title",options,3,10L,1);
+		
+		assertEquals(result, message);		
+		
+		
+		
+	}
 	
 	
 	/*
@@ -219,5 +240,4 @@ class QuestionTestTESTING {
 		
 		assertEquals(result, message);	
 }
-
 }
