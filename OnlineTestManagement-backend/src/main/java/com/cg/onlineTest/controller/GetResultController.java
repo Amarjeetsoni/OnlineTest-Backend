@@ -33,30 +33,30 @@ public class GetResultController {
 	/*
 	 * getTestByUserId Method takes userId as argument and return list of All test assigned to that particular user. 
 	 */
-	@GetMapping("getAllTestByUserId")
-	public ResponseEntity<List<Test>> getTestByUserId(@RequestParam("userId") long userId) throws Exception{
+	@GetMapping("getCountOfAllTestByUserId")
+	public ResponseEntity<Integer> getTestByUserId(@RequestParam("userId") long userId) throws Exception{
 		     logger.trace("GetTestByUserId Method Accessed...");    						// Default level is Info and trace is not upto the Info level so we have to set the property in application.context 
-			 return new ResponseEntity<List<Test>>(resultService.getAssignedTest(userId) ,HttpStatus.OK);
+			 return new ResponseEntity<Integer>(resultService.getAssignedTest(userId) ,HttpStatus.OK);
 	}
 	
 	
 	/*
 	 * getUpcomingTest Method takes userId as argument and return list of all upcoming test details.
 	 */
-	@GetMapping("getUpcommingTestByUserId")
-	public ResponseEntity<List<Test>> getUpcomingTest(@RequestParam("userId") long userId) throws Exception{
+	@GetMapping("getCountOfUpcomingTestByUserId")
+	public ResponseEntity<Integer> getUpcomingTest(@RequestParam("userId") long userId) throws Exception{
 		logger.trace("getUpcomingTest Method Accessed...");   
-		return new ResponseEntity<List<Test>>(resultService.getUpcomingTest(userId), HttpStatus.OK);
+		return new ResponseEntity<Integer>(resultService.getUpcomingTest(userId), HttpStatus.OK);
 	}
 	
 	
 	/*
 	 *  getActiveTest Method takes userId as Argument and return only test which is currently active.
 	 */
-	@GetMapping("getActiveTestByUserId")
-	public ResponseEntity<Test> getActiveTest(@RequestParam("userId") long userId) throws Exception{
+	@GetMapping("getCountActiveTestByUserId")
+	public ResponseEntity<Integer> getActiveTest(@RequestParam("userId") long userId) throws Exception{
 		logger.trace("getActiveTest Method Accessed...");   
-		return new ResponseEntity<Test>(resultService.getActiveTest(userId), HttpStatus.OK);
+		return new ResponseEntity<Integer>(resultService.getActiveTest(userId), HttpStatus.OK);
 	}
 	
 	@GetMapping("/assignTest")

@@ -40,39 +40,8 @@ public class GetResultDaoImpl implements GetResultDao {
 	 * @return List<Test> this return List of test if data available otherwise throw exception.
 	 */
 	@Override
-	public List<Test> getAssignedTest(long userId) throws Exception {
-		try {
-			logger.info("getAssignedTest dao method is accessed.");
-			if(!isUserExist(userId)){
-				 throw new DataMismatchExcpetion("No such User Exist...");
-			}
-			String statement = "SELECT user FROM User_Test user WHERE User_Id=:pUser";
-			TypedQuery<User_Test> query = entityManager.createQuery(statement, User_Test.class);
-			query.setParameter("pUser", userId);
-			List<User_Test> user_Test = query.getResultList();
-			if(user_Test.size() == 0) {
-				logger.error("No user Details is founded in USER_TEST table.");
-				throw new NoDataFoundedException("No Test Assigned to particular User...");
-			}
-			List<Test> testList = new ArrayList<>();
-			user_Test.forEach(t->System.out.println(t.getTestId().getTest_Id()));
-			for(User_Test val: user_Test) {
-				Test test = entityManager.find(Test.class, val.getTestId().getTest_Id());
-				testList.add(test);
-			}
-			logger.info("Data founded and sent to user interface.");
-			return testList;
-			
-		}
-		catch(DataMismatchExcpetion exception) {
-			throw new DataMismatchExcpetion(exception.getMessage());
-		}
-		catch(NoDataFoundedException exception) {
-			throw new NoDataFoundedException(exception.getMessage());
-		}
-		catch(Exception exception) {
-			throw new DataMismatchExcpetion("Internal server error!");
-		}
+	public Integer getAssignedTest(long userId) throws Exception {
+		return getAllTestAssign(userId).size();
 		
 	}
 
@@ -82,10 +51,10 @@ public class GetResultDaoImpl implements GetResultDao {
 	 * @return List<Test> this return List of test if data available otherwise throw exception.
 	 */
 	@Override
-	public List<Test> getUpcomingTest(long userId) throws Exception {
+	public Integer getUpcomingTest(long userId) throws Exception {
 		try {
 			logger.info("getUpcomingTest dao method is accessed.");
-			List<Test> testList = getAssignedTest(userId);
+			List<Test> testList = getAllTestAssign(userId);
 			Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 			List<Test> updatedTestList = new ArrayList<>();
 			for(Test test: testList) {
@@ -100,7 +69,7 @@ public class GetResultDaoImpl implements GetResultDao {
 				throw new NoDataFoundedException("All test are passed");
 			}
 			logger.info("Upcoming test data is send");
-			return updatedTestList;
+			return updatedTestList.size();
 		}
 		catch(DataMismatchExcpetion exception) {
 			throw new DataMismatchExcpetion(exception.getMessage());
@@ -119,23 +88,27 @@ public class GetResultDaoImpl implements GetResultDao {
 	 * @return Test this return test if data available otherwise throw exception.
 	 */
 	@Override
-	public Test getActiveTest(long userId) throws Exception {
+	public Integer getActiveTest(long userId) throws Exception {
 		try {
 			
 			logger.info("getActiveTest dao method is accessed.");	
-			List<Test> testList = getAssignedTest(userId);
-			
+			List<Test> testList = getAllTestAssign(userId);
+			int count = 0;
 			Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 			for(Test test: testList) {
 				int startNumber = test.getStartDate().compareTo(timeStamp);
 				int endNumber = test.getEndDate().compareTo(timeStamp);
 				if(startNumber > 0 && endNumber < 0) {
 					logger.info("Test founded and sent to service class.");	
-					return test;
+					count++;
 				}
 			}
-			logger.error("No Assign test is active currently");
-			throw new NoDataFoundedException("Currently No test is Active for given user");
+			if(count > 0) {
+				return count;
+			}
+			else {
+				return 0;
+			}
 		}
 		catch(DataMismatchExcpetion exception) {
 			throw new DataMismatchExcpetion(exception.getMessage());
@@ -227,6 +200,44 @@ public class GetResultDaoImpl implements GetResultDao {
 			catch(Exception exception) {
 				throw new Exception("Internal Server Error...");
 			}
+	}
+	
+	
+	public List<Test> getAllTestAssign(long userId) throws Exception{
+		try {
+			logger.info("getAssignedTest dao method is accessed.");
+			if(!isUserExist(userId)){
+				 throw new DataMismatchExcpetion("No such User Exist...");
+			}
+			String statement = "SELECT user FROM User_Test user WHERE User_Id=:pUser";
+			TypedQuery<User_Test> query = entityManager.createQuery(statement, User_Test.class);
+			query.setParameter("pUser", userId);
+			List<User_Test> user_Test = query.getResultList();
+			if(user_Test.size() == 0) {
+				logger.error("No user Details is founded in USER_TEST table.");
+				throw new NoDataFoundedException("No Test Assigned to particular User...");
+			}
+			List<Test> testList = new ArrayList<>();
+			user_Test.forEach(t->System.out.println(t.getTestId().getTest_Id()));
+			for(User_Test val: user_Test) {
+				Test test = entityManager.find(Test.class, val.getTestId().getTest_Id());
+				testList.add(test);
+			}
+			logger.info("Data founded and sent to user interface.");
+			return testList;
+			
+		}
+		catch(DataMismatchExcpetion exception) {
+			throw new DataMismatchExcpetion(exception.getMessage());
+		}
+		catch(NoDataFoundedException exception) {
+			throw new NoDataFoundedException(exception.getMessage());
+		}
+		catch(Exception exception) {
+			throw new DataMismatchExcpetion("Internal server error!");
+		}
+		
+		
 	}
 
 

@@ -35,7 +35,7 @@ public class GetResultServiceImpl implements GetResultService {
 	 * getUpcomingTest method is used to call dao layer and used to get all upcoming test assign a particular user.
 	 */
 	@Override
-	public List<Test> getUpcomingTest(long userId) throws Exception {
+	public Integer getUpcomingTest(long userId) throws Exception {
 		logger.info("getUpcomingTest service method accessed.");
 		return resultDao.getUpcomingTest(userId);
 	}
@@ -44,7 +44,7 @@ public class GetResultServiceImpl implements GetResultService {
 	 * getActiveTest method is used to call dao layer and used to get a details of test which is active now.
 	 */
 	@Override
-	public Test getActiveTest(long userId) throws Exception {
+	public Integer getActiveTest(long userId) throws Exception {
 		logger.info("getActiveTest service method accessed.");
 		return resultDao.getActiveTest(userId);
 	}
@@ -53,7 +53,7 @@ public class GetResultServiceImpl implements GetResultService {
 	 * getAssignedTest method is used to call dao layer and used to get all test assign a particular user.
 	 */
 	@Override
-	public List<Test> getAssignedTest(long userId) throws Exception {
+	public Integer getAssignedTest(long userId) throws Exception {
 		logger.info("getAssignedTest service method accessed.");
 		return resultDao.getAssignedTest(userId);
 	}

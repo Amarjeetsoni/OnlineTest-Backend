@@ -18,21 +18,21 @@ public interface GetResultDao {
 	 * @param userId This is parameter of long type of getUpcomingTest method.
 	 * @return List<Test> this return List of test if data available otherwise throw exception.
 	 */
-	public List<Test> getUpcomingTest(long userId) throws Exception;	
+	public Integer getUpcomingTest(long userId) throws Exception;	
 	
 	/*
 	 * This method is used to get a Test object which is currently active.
 	 * @param userId This is parameter of long type of getActiveTest method.
 	 * @return Test this return test if data available otherwise throw exception.
 	 */
-	public Test getActiveTest(long userId) throws Exception;
+	public Integer getActiveTest(long userId) throws Exception;
 	
 	/*
 	 * This method is used to get all test list assigned to particular user.
 	 * @param userId This is parameter of long type of getAllTestAssignToPerticularUser method.
 	 * @return List<Test> this return List of test if data available otherwise throw exception.
 	 */
-	public List<Test> getAssignedTest(long userId) throws Exception;
+	public Integer getAssignedTest(long userId) throws Exception;
 	
 	
 	/*
