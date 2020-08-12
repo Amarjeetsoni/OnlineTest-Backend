@@ -1,6 +1,6 @@
 package com.cg.onlineTest.services;
 
-import java.util.List;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cg.onlineTest.dao.GetResultDao;
-import com.cg.onlineTest.entities.Test;
+
 
 @Transactional
 @Service("GetResultServiceImpl")

@@ -1,8 +1,6 @@
 package com.cg.onlineTest.services;
 
-import java.util.List;
 
-import com.cg.onlineTest.entities.Test;
 
 public interface GetResultService {
 

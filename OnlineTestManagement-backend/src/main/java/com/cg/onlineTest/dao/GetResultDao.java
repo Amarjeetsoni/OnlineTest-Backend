@@ -1,8 +1,6 @@
 package com.cg.onlineTest.dao;
 
-import java.util.List;
 
-import com.cg.onlineTest.entities.Test;
 
 public interface GetResultDao {
 	

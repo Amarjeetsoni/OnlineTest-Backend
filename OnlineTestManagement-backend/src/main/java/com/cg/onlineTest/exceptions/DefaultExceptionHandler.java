@@ -49,8 +49,16 @@ public class DefaultExceptionHandler  extends ResponseEntityExceptionHandler{
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> internalServerError(Exception exception){
 		return new ResponseEntity<Object>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-
-}
+	}
+		
+	@ExceptionHandler(DataEnteringException.class)
+	public final ResponseEntity<Object> DataEnteringException(Exception exception){
+			return new ResponseEntity<Object>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	} 
+	@ExceptionHandler(DataMergingException.class)
+	public final ResponseEntity<Object> DataMergingException(Exception exception){
+			return new ResponseEntity<Object>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	} 
 }
 	
 	class ErrorMessage{

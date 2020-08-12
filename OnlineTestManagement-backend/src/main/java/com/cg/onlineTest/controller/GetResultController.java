@@ -1,6 +1,5 @@
 package com.cg.onlineTest.controller;
 
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cg.onlineTest.entities.Test;
 import com.cg.onlineTest.services.GetResultService;
 
 @SpringBootApplication
@@ -60,7 +58,7 @@ public class GetResultController {
 	}
 	
 	@GetMapping("/assignTest")
-	public ResponseEntity<Object> assignTest(@RequestParam("testId") long testId, @RequestParam("userId") long userId){
+	public ResponseEntity<Object> assignTest(@RequestParam("testId") long testId, @RequestParam("userId") long userId) throws Exception{
 		try {
 		resultService.assignTest(testId, userId);
 	    return new ResponseEntity<Object>("User Founded... and Test Assigned", HttpStatus.OK);
