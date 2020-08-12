@@ -1,5 +1,6 @@
 package com.cg.onlineTest.controller;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,6 +39,12 @@ public class QuestionTestController {
 	String msg;
 	
 	
+	@PostMapping("/populateData")
+	public ResponseEntity<Object> populateData() {
+		logger.info("Populating");
+		questionService.populateQuestionsData();
+		return new ResponseEntity<Object>("Question Updated successfully", HttpStatus.OK);
+	}
 	
 	
 	/**********************************************************************************
@@ -62,10 +69,21 @@ public class QuestionTestController {
 //	}
 	
 	@PostMapping("/updateQuestion")
-	public ResponseEntity<Object> updateQuestion(@RequestBody AddQuestionHelp question) throws Exception{
+	public ResponseEntity<Object> updateQuestion(@RequestBody AddQuestionHelper question) throws Exception{
 		logger.info("Updating");
+		Set<String> option = new HashSet<String>();
+//		Category category = new Category();
+//		Stringclass cat = new Stringclass();
+		//category.setCategoryId(cat.catId);
+	   // category.setName(cat.name);
+		
+		Options optionss = new Options();
+		option.add(optionss.option1);
+		option.add(optionss.option2);
+		option.add(optionss.option3);
+		option.add(optionss.option4);
 		try {
-			questionService.updateQuestion(question.questionId, question.questionTitle, question.questionAnswer,question.questionMarks);
+			questionService.updateQuestion(question.questionId, question.questionTitle,question.option , question.questionAnswer,question.questionMarks,question.category_id);
 			return new ResponseEntity<Object>("Details updated successfully", HttpStatus.OK);
 			
 		}
@@ -129,7 +147,7 @@ public class QuestionTestController {
 	**************************************************************************************/
 	
 	@PostMapping("/AddQuestion")
-	public ResponseEntity<Object> addQuestion(@RequestBody AddQuestionHelper test){
+	public ResponseEntity<Object> addQuestion(@RequestBody AddQuestionHelp test){
 		    Question ques = new Question();
 		    ques.setQuestionTitle(test.questionTitle);
 		    ques.setQuestionAnswer(test.questionAnswer);
@@ -144,20 +162,14 @@ public class QuestionTestController {
 }
 
 
-
-// helper classes
-
-
-
-
-
-
 class CategoryHelper{
+
 	public String name;
 }
 
 
 class AddQuestionHelper{
+	public long questionId;
 	public String questionTitle;
 	public int questionAnswer;
 	public long questionMarks;
@@ -165,13 +177,15 @@ class AddQuestionHelper{
 	public long category_id;
 	
 }
+
+
 class AddQuestionHelp{
-	public long questionId;
+	
 	public String questionTitle;
 	public int questionAnswer;
 	public long questionMarks;
+	public Set<String> option;
+	public long category_id;
 	
 }
-
-
 

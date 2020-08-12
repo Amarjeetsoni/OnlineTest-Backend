@@ -1,7 +1,7 @@
 package com.cg.onlineTest.services;
 
 import java.util.List;
-
+import java.util.Set;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +67,10 @@ public class QuestionTestServiceImpl implements QuestionTestService {
 
 
 	@Override
-	public boolean updateQuestion(long questionId, String questionTitle, int questionAnswer, long questionMarks) {
-		questionDao.updateQuestion(questionId,questionTitle,questionAnswer,questionMarks);
+	public boolean updateQuestion(long questionId, String questionTitle, Set<String> option ,int questionAnswer,long questionMarks,long category_id) {
+		Category category = new Category();
+		category.setCategoryId(category_id);
+		questionDao.updateQuestion(questionId,questionTitle, option ,questionAnswer,questionMarks,category);
 		return true; 
 		
 	}
@@ -101,5 +103,9 @@ Created By                   - K Sai Deepika
 		return questionDao.addCategory(category);
 	}
 
-
+	@Override
+	public void populateQuestionsData() {
+		// TODO Auto-generated method stub
+		
+	}
 }
