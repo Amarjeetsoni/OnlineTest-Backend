@@ -6,7 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,16 +34,16 @@ public class CalculateScoreContoller {
 	 * 
 	 * @param userTestId : Identification of the Test attempted by User.
 	 * 
+	 * @return : Long value of score calculated for a test by a User.
 	 * 
 	 * throws Exception i.e.
-	 * 
+	 * DataEnteringException : It is raised if there is an sql exception for entering data in the database.
+	 * DataMergingException : It is raised if there is an sql exception for merging the data into database.
 	 */
 	@GetMapping("getScore/{userTestId}")
-	public Long getTestScore(@PathVariable Long userTestId) throws Exception{
+	public ResponseEntity<Object> getTestScore(@PathVariable Long userTestId) throws Exception{
 		logger.info("Controller called for calculating score...");   
-		Long totalMarks =  calculateService.calculateScoreService(userTestId);
-		System.out.println(totalMarks);
-		return totalMarks;
+		return new ResponseEntity<Object>(calculateService.calculateScoreService(userTestId), HttpStatus.OK);
 	}
 	
 	
