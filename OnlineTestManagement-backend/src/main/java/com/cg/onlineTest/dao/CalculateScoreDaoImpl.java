@@ -2,6 +2,7 @@ package com.cg.onlineTest.dao;
 
 
 
+
 import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
@@ -33,6 +34,9 @@ public class CalculateScoreDaoImpl implements CalculateScoreDao{
 	/*
 	 * getUserTest method returns class User_Test based on the UserTestId
 	 * 
+	 * parameter accepted is userTestId
+	 * 
+	 * @return: User_test object based on userTestId
 	 */
 	@Override
 	public User_Test getUserTest(long userTestId) throws Exception{
@@ -52,6 +56,7 @@ public class CalculateScoreDaoImpl implements CalculateScoreDao{
 	 * 
 	 * parameter accepted is User_Test class
 	 * 
+	 * @return: boolean value
 	 */
 	@Override
 	public boolean setScore(User_Test userTest) throws Exception{
@@ -74,12 +79,12 @@ public class CalculateScoreDaoImpl implements CalculateScoreDao{
 	 */
 	@Override
 	public void setCategoryResult(CategoryResult categoryResult) throws Exception{
-		logger.info("DAO method to persist Category_Result class into Database");
 		try {
 			entityManager.persist(categoryResult);
 		}
 		catch(Exception e) {
 			throw new DataEnteringException("Data cannot be entered to Database...");
 		}
+		logger.info("DAO method to persist Category_Result class into Database");		
 	}
 }
