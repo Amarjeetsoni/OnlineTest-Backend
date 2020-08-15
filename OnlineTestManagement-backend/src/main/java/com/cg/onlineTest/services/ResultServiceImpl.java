@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.cg.onlineTest.OnlineTestManagementBackendApplication;
 import com.cg.onlineTest.dao.ResultDao;
 import com.cg.onlineTest.entities.CategoryResult;
+import com.cg.onlineTest.entities.Question;
 import com.cg.onlineTest.entities.User_Test;
 
 @Service
@@ -34,7 +35,7 @@ public class ResultServiceImpl implements ResultService {
 	 * @return List<userTest> : It returns the ArrayList of Results.
 	 * 
 	 * throws Exception i.e.
-	 * NoDataFoundedException : It is raised if there are no bookings in the database.
+	 * NoDataFoundedException : It is raised if there are no result in the database.
 	 * DataMismatchException : It is raised if there is an sql exception.
 	 */
 	@Override
@@ -56,7 +57,7 @@ public class ResultServiceImpl implements ResultService {
 	 * @return List<CategoryResult> : It returns the ArrayList of Category wise Results.
 	 * 
 	 * throws Exception i.e.
-	 * NoDataFoundedException : It is raised if there are no bookings in the database.
+	 * NoDataFoundedException : It is raised if there are no result in the database.
 	 * DataMismatchException : It is raised if there is an sql exception.
 	 */
 	@Override
@@ -65,6 +66,25 @@ public class ResultServiceImpl implements ResultService {
 		msg = "Communicating with database for the Category Results ";
 		logger.info(msg);
 		return resultDao.getCategoryResult(userTestId);
+	}
+	
+	
+
+	/*
+	 * Method : getQuestions Description : Used to fetch the questions of a \
+	 * particular test from database.
+	 * 
+	 * @param testId : Identification of the test .
+	 * 
+	 * @return List<Question> : It returns the ArrayList of questions.
+	 * 
+	 * throws Exception i.e.
+	 * QuestionsNotFoundException : It is raised if there are no Questions in the database.
+	 * 
+	 */
+	@Override
+	public List<Question> getQuestions(Long testId) throws Exception{
+		return resultDao.getQuestions(testId);
 	}
 
 }

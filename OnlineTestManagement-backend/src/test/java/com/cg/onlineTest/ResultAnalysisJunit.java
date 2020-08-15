@@ -16,6 +16,7 @@ import com.cg.onlineTest.controller.OnlineTestController;
 import com.cg.onlineTest.dao.ResultDao;
 import com.cg.onlineTest.dao.ResultDaoImpl;
 import com.cg.onlineTest.entities.CategoryResult;
+import com.cg.onlineTest.entities.Question;
 import com.cg.onlineTest.entities.User_Test;
 import com.cg.onlineTest.exceptions.DataMismatchExcpetion;
 import com.cg.onlineTest.services.ResultService;
@@ -49,8 +50,8 @@ public class ResultAnalysisJunit {
 	public void getResultTest() throws Exception {
 		logger.info("Validation of Get All Results of a particular user");
 		Long expected = 1L;
-		List<User_Test> resultsList = resultService.getResult(expected);
-		Long actual = resultsList.get(0).getUser().getUserId();
+		List<User_Test> questionsList = resultService.getResult(expected);
+		Long actual = questionsList.get(0).getUser().getUserId();
 		logger.info("Actual Value is :" + actual);
 		assertEquals(""+expected,""+ actual);
 	}
@@ -63,8 +64,8 @@ public class ResultAnalysisJunit {
 	public void getCategoryResult() throws Exception {
 		logger.info("Validation of Get All category wise Results of a particular user");
 		Long expected = 92L;
-		List<CategoryResult> resultsList = resultService.getCategoryResult(expected);
-		Long actual = resultsList.get(0).getUserTest().getUser_Test_Id();
+		List<CategoryResult> questionsList = resultService.getCategoryResult(expected);
+		Long actual = questionsList.get(0).getUserTest().getUser_Test_Id();
 		logger.info("Actual Value is :" + actual);
 		assertEquals(""+expected,""+ actual);
 	}
@@ -78,13 +79,29 @@ public class ResultAnalysisJunit {
 	public void exceptionCheckForGetResult() throws Exception {
 		
 		
-		List<User_Test> resultsList = null;
+		List<User_Test> resultList = null;
 		logger.info("Validation of DataMismatchException");
 		Long expected = 91L;
 		if(resultDao != null)
 		{
-			resultsList = resultDao.getResult(expected);
+			resultList = resultDao.getResult(expected);
 		}
-		logger.info("Actual Value is :" + resultsList);
+		logger.info("Actual Value is :" + resultList);
 	}
+	
+	
+	/*
+	 * This test will do testing for fetching questions from database.
+	 */
+	@Test
+	public void getQuestionsTest() throws Exception{
+		
+		logger.info("Validation of Get All Questions of a particular test");
+		Long testId = 1L;
+		List<Question> questionsList = resultService.getQuestions(testId);
+		
+		assertEquals(true,questionsList.size() > 0);
+		
+	}
+	
 }

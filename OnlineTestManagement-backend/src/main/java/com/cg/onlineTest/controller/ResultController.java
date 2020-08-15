@@ -67,4 +67,26 @@ public class ResultController {
 		return new ResponseEntity<Object>(resultService.getCategoryResult(userTestId), HttpStatus.OK);
 	}
 	
+
+	/*
+	 * Method : getQuestions Description : Used to fetch the questions of a \
+	 * particular test from database.
+	 * 
+	 * @param testId : Identification of the test .
+	 * 
+	 * @return List<Question> : It returns the ArrayList of questions.
+	 * 
+	 * throws Exception i.e.
+	 * QuestionsNotFoundException : It is raised if there are no Questions in the database.
+	 * 
+	 */
+	@GetMapping("/getQuestions/{testId}")
+	public ResponseEntity<Object> getQuestions(@PathVariable Long testId) throws Exception{
+		   
+		msg = "Fetching the Results of user :" + testId;
+		logger.info(msg);
+		return new ResponseEntity<Object>(resultService.getQuestions(testId), HttpStatus.OK);
+	}
+	
+	
 }

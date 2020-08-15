@@ -52,6 +52,10 @@ public class User_Test {
 	@Column(name = "IsAttempted")
 	private boolean isAttempted;
 	
+	@Column(name = "IsDeclared")
+	private boolean isDeclared;
+	
+	
 	@Column(name = "MarksScored")
 	private long marksScored;
 	
