@@ -65,7 +65,7 @@ public class DaoTestClass {
 		return user;
 	}
 	
-	public boolean addOptionInTest(long question_id, Set<String> option) {
+	public boolean addOptionInTest(long question_id, List<String> option) {
 		Question question = entityManager.find(Question.class, question_id);
 		question.setQuestionOptions(option);
 		entityManager.merge(question);

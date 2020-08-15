@@ -25,6 +25,7 @@ import com.cg.onlineTest.services.QuestionTestService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,7 +70,7 @@ public class QuestionTestTESTING {
 	
 	@Test
 	 public void testUpdateQuestion() {
-		Set<String> options = new HashSet<String>();
+		List<String> options = new ArrayList<String>();
 		options.add("945");options.add("678");options.add("439");options.add("568");
 		category.setCategoryId(1);
 		category.setName("Java");
@@ -182,7 +183,7 @@ public class QuestionTestTESTING {
 	public void testtAddQuestion() throws Exception {
 		category.setCategoryId(1);
 		category.setName("Java");
-		Set<String> options = new HashSet<String>();
+		List<String> options = new ArrayList<String>();
 		question.setQuestionId(2);
 		question.setQuestionCategory(category);
 		question.setQuestionTitle("The sum of all two digit numbers divisible by 5 is");
@@ -208,7 +209,7 @@ public class QuestionTestTESTING {
 	
 	@Test
 	public void testtUpdateQuestion() throws Exception {
-		Set<String> options = new HashSet<String>();
+		List<String> options = new ArrayList<>();
 		options.add("945");options.add("678");options.add("439");options.add("568");
 		
 		Boolean message= true;

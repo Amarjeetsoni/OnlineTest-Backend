@@ -2,7 +2,9 @@ package com.cg.onlineTest.controller;
 
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,7 +122,7 @@ public class CheckTableDataController {
 	public ResponseEntity<Object> addOption(@RequestBody Options option){
 		try {
 			long question_id = option.question_Id;
-			Set<String> options = new HashSet<>();
+			List<String> options = new ArrayList<>();
 			options.add(option.option1);
 			options.add(option.option2);
 			options.add(option.option3);

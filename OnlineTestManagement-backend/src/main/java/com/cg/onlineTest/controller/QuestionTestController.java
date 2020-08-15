@@ -173,7 +173,7 @@ class AddQuestionHelper{
 	public String questionTitle;
 	public int questionAnswer;
 	public long questionMarks;
-	public Set<String> option;
+	public List<String> option;
 	public long category_id;
 	
 }
@@ -184,7 +184,7 @@ class AddQuestionHelp{
 	public String questionTitle;
 	public int questionAnswer;
 	public long questionMarks;
-	public Set<String> option;
+	public List<String> option;
 	public long category_id;
 	
 }

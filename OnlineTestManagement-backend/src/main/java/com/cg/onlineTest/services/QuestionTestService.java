@@ -12,7 +12,8 @@ public interface QuestionTestService {
 	public Boolean deleteQuestion(Long questionId);
 	void populateQuestionsData();
 	public boolean addCategory(Category category);
-	public boolean updateQuestion(long questionId, String questionTitle, Set<String> option, int questionAnswer,
+	
+	boolean updateQuestion(long questionId, String questionTitle, List<String> option, int questionAnswer,
 			long questionMarks, long category_id);
 	
 	
