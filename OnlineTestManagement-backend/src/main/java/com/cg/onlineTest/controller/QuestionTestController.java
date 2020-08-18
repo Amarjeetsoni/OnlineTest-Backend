@@ -1,7 +1,6 @@
 package com.cg.onlineTest.controller;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 
@@ -12,9 +11,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -62,14 +63,9 @@ public class QuestionTestController {
 		return new ResponseEntity<List<Question>>(questionService.getAllQuestion(), HttpStatus.OK);
 	}
 	
+
 	
-//	@PostMapping("addQuestion")
-//	public ResponseEntity<Object> addQuestion(@RequestBody Question question) throws Exception{
-//		service.addQuestion(question);
-//		return new ResponseEntity<Object>("Question added successfully", HttpStatus.OK);
-//	}
-	
-	@PostMapping("/updateQuestion")
+	@PutMapping("/updateQuestion/{questionId}")
 	public ResponseEntity<Object> updateQuestion(@RequestBody AddQuestionHelper question) throws Exception{
 		logger.info("Updating");
 		List<String> option = new ArrayList<String>();
@@ -77,14 +73,17 @@ public class QuestionTestController {
 //		Stringclass cat = new Stringclass();
 		//category.setCategoryId(cat.catId);
 	   // category.setName(cat.name);
-		
-		Options optionss = new Options();
-		option.add(optionss.option1);
-		option.add(optionss.option2);
-		option.add(optionss.option3);
-		option.add(optionss.option4);
+		option.add(question.optionA);
+		option.add(question.optionB);
+		option.add(question.optionC);
+		option.add(question.optionD);
+//		Options optionss = new Options();
+//		option.add(optionss.option1);
+//		option.add(optionss.option2);
+//		option.add(optionss.option3);
+//		option.add(optionss.option4);
 		try {
-			questionService.updateQuestion(question.questionId, question.questionTitle,question.option , question.questionAnswer,question.questionMarks,question.category_id);
+			questionService.updateQuestion(question.questionId, question.questionTitle,option , question.questionAnswer,question.questionMarks,question.category_id);
 			return new ResponseEntity<Object>("Details updated successfully", HttpStatus.OK);
 			
 		}
@@ -101,7 +100,7 @@ public class QuestionTestController {
  *********************************************************************************/  
 	
 	
-	@GetMapping("deleteQuestion/{questionId}")
+	@DeleteMapping("deleteQuestion/{questionId}")
 		 public ResponseEntity<String> deleteQuestion(@PathVariable("questionId") long questionId) throws Exception
 			{
 				try
@@ -147,7 +146,7 @@ public class QuestionTestController {
 	    *Created By            - Deepika                           
 	**************************************************************************************/
 	
-	@PostMapping("/AddQuestion")
+	@PutMapping("/AddQuestion")
 	public ResponseEntity<Object> addQuestion(@RequestBody AddQuestionHelp test){
 		    Question ques = new Question();
 		    ques.setQuestionTitle(test.questionTitle);
@@ -175,6 +174,11 @@ class AddQuestionHelper{
 	public int questionAnswer;
 	public long questionMarks;
 	public List<String> option;
+	public String optionA;
+	public String optionB;
+	public String optionC;
+	public String optionD;
+
 	public long category_id;
 	
 }

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.onlineTest.OnlineTestManagementBackendApplication;
@@ -18,6 +18,7 @@ import com.cg.onlineTest.services.ResultService;
 @SpringBootApplication
 @RestController
 @CrossOrigin("*")
+@RequestMapping("/result")
 public class ResultController {
 
 	@Autowired
@@ -66,5 +67,27 @@ public class ResultController {
 		logger.info(msg);
 		return new ResponseEntity<Object>(resultService.getCategoryResult(userTestId), HttpStatus.OK);
 	}
+	
+
+	/*
+	 * Method : getQuestions Description : Used to fetch the questions of a \
+	 * particular test from database.
+	 * 
+	 * @param testId : Identification of the test .
+	 * 
+	 * @return List<Question> : It returns the ArrayList of questions.
+	 * 
+	 * throws Exception i.e.
+	 * QuestionsNotFoundException : It is raised if there are no Questions in the database.
+	 * 
+	 */
+	@GetMapping("/getQuestions/{testId}")
+	public ResponseEntity<Object> getQuestions(@PathVariable Long testId) throws Exception{
+		   
+		msg = "Fetching the Results of user :" + testId;
+		logger.info(msg);
+		return new ResponseEntity<Object>(resultService.getQuestions(testId), HttpStatus.OK);
+	}
+	
 	
 }

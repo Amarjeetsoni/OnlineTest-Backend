@@ -1,8 +1,6 @@
 package com.cg.onlineTest.dao;
 
 import java.util.List;
-
-
 import com.cg.onlineTest.entities.Category;
 import com.cg.onlineTest.entities.Question;
 
@@ -18,7 +16,6 @@ public interface QuestionTestDao {
 	Boolean addCategory(Category category);
 	
 	Category getCategory(Long categoryId);
-
 	boolean updateQuestion(long questionId, String questionTitle, List<String> option, int questionAnswer,
 			long questionMarks, Category category);
 

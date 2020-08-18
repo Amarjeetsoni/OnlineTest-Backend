@@ -59,6 +59,11 @@ public class DefaultExceptionHandler  extends ResponseEntityExceptionHandler{
 	public final ResponseEntity<Object> DataMergingException(Exception exception){
 			return new ResponseEntity<Object>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	} 
+	
+	@ExceptionHandler(QuestionsNotFoundException.class)
+	public final ResponseEntity<Object> QuestionsNotFoundException(Exception exception){
+		return new ResponseEntity<Object>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+	}
 }
 	
 	class ErrorMessage{

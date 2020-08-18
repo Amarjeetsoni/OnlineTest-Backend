@@ -46,6 +46,7 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 		List<Integer> optionList = userTest.getUsertestAnswer();
 		List<Question> questionsList = userTest.getTest().getAllQuestion();
 		
+		answersCorrectedList.clear();
 		int currentQuestion = 0;
 		for(Integer option: optionList) 
 		{
@@ -67,14 +68,15 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 			currentQuestion++;
 			
 		}
-		
+		logger.info("Score: "+score);
 		userTest.setMarksScored(score);
 		userTest.setTestCorrectAnswer(answersCorrectedList);
-		
+		userTest.setDeclared(true);
 		calculateDao.setScore(userTest);
 		logger.info("Method executed to calculate score ->" + score);
-		System.out.println(score);
-		categoryScore(userTest);
+		
+		List<CategoryResult> list =  categoryScore(userTestId);
+		logger.info("Number of Categories: " + list.size());
 		return score;
 	}
 
@@ -86,7 +88,8 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 	 * 
 	 *  Returns List if Category_Result.
 	 */
-	public List<CategoryResult> categoryScore(User_Test userTest) throws Exception{
+	public List<CategoryResult> categoryScore(Long userTestId) throws Exception{
+		User_Test userTest = calculateDao.getUserTest(userTestId);
 		List<Question> questionsList = userTest.getTest().getAllQuestion();
 		List<Boolean> answeredCorrectList = userTest.getTestCorrectAnswer();
 		
@@ -96,8 +99,8 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 			Category category = question.getQuestionCategory();
 			categorySet.add(category);
 		}
+		logger.info(" Answers Corrected List: " + answeredCorrectList);
 		
-	
 		int answerListIteration = 0;
 		Long attemptedQuestions = 0L;
 		Long categoryScore = 0L;
@@ -113,7 +116,12 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 			for(Question question: questionsList)
 			{
 				if(category.getCategoryId()  == question.getQuestionCategory().getCategoryId()) {
-					if(answeredCorrectList.get(answerListIteration) == true)
+					
+					if(answeredCorrectList.get(answerListIteration) == null)
+					{
+						//doing nothing
+					}
+					else if(answeredCorrectList.get(answerListIteration) == true)
 					{
 						attemptedQuestions++;
 						categoryScore += question.getQuestionMarks(); 
@@ -134,13 +142,21 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 			
 			categoryResultList.add(categoryResult);
 			
-			logger.info("Method executed for Category wise score");
+			
 		}
+		logger.info("Category_Result List: "+ categoryResultList);
+		
+		logger.info("Method executed for Category wise score");
 		return categoryResultList;
 	}
 
+
+	@Override
+	public List<User_Test> getTests() throws Exception {
 		
-	
+			return calculateDao.getTests();
+		
+	}
 
 
 }

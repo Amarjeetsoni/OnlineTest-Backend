@@ -46,7 +46,20 @@ public class CalculateScoreContoller {
 		return new ResponseEntity<Object>(calculateService.calculateScoreService(userTestId), HttpStatus.OK);
 	}
 	
-	
+	/*
+	 * Method : getTestsList Description : Used to get all tests
+	 * 
+	 * 
+	 * @return : List of type User_Test.
+	 * 
+	 * 
+	 */
+	@GetMapping("/getTests")
+	public ResponseEntity<Object> getTestsList() throws Exception{
+		   
+		logger.info("Controller called for returning list of Tests...");
+		return new ResponseEntity<Object>(calculateService.getTests(), HttpStatus.OK);
+	}
 	
 	
 	

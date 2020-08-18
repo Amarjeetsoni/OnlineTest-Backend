@@ -2,7 +2,11 @@ package com.cg.onlineTest.dao;
 
 
 
+
+import java.util.List;
+
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cg.onlineTest.controller.OnlineTestController;
 
 import com.cg.onlineTest.entities.CategoryResult;
-
+import com.cg.onlineTest.entities.User;
 import com.cg.onlineTest.entities.User_Test;
 import com.cg.onlineTest.exceptions.DataEnteringException;
 import com.cg.onlineTest.exceptions.DataMergingException;
-
+import com.cg.onlineTest.exceptions.DataMismatchExcpetion;
 import com.cg.onlineTest.exceptions.NoDataFoundedException;
 
 @Repository
@@ -33,6 +37,9 @@ public class CalculateScoreDaoImpl implements CalculateScoreDao{
 	/*
 	 * getUserTest method returns class User_Test based on the UserTestId
 	 * 
+	 * parameter accepted is userTestId
+	 * 
+	 * @return: User_test object based on userTestId
 	 */
 	@Override
 	public User_Test getUserTest(long userTestId) throws Exception{
@@ -44,7 +51,6 @@ public class CalculateScoreDaoImpl implements CalculateScoreDao{
 		{
 			throw new NoDataFoundedException("No Data Available in database...");
 		}
-		
 	}
 
 	/*
@@ -52,6 +58,7 @@ public class CalculateScoreDaoImpl implements CalculateScoreDao{
 	 * 
 	 * parameter accepted is User_Test class
 	 * 
+	 * @return: boolean value
 	 */
 	@Override
 	public boolean setScore(User_Test userTest) throws Exception{
@@ -74,12 +81,41 @@ public class CalculateScoreDaoImpl implements CalculateScoreDao{
 	 */
 	@Override
 	public void setCategoryResult(CategoryResult categoryResult) throws Exception{
-		logger.info("DAO method to persist Category_Result class into Database");
 		try {
 			entityManager.persist(categoryResult);
 		}
 		catch(Exception e) {
 			throw new DataEnteringException("Data cannot be entered to Database...");
 		}
+		logger.info("DAO method to persist Category_Result class into Database");		
 	}
+
+	
+	/*
+	 * getTests method adds all tests from class User_Test to List of type User_Test
+	 * 
+	 * no parameter
+	 * 
+	 * @return: List of User_Test
+	 */
+	@Override
+	public List<User_Test> getTests() throws Exception {
+		try {
+			String qStr = "SELECT ut from User_Test ut";
+			TypedQuery<User_Test> query = entityManager.createQuery(qStr, User_Test.class);
+			List<User_Test> testsList = query.getResultList();
+			if(testsList == null || testsList.size() == 0) {
+				throw new NoDataFoundedException("No data Found...");
+			}
+			return testsList;
+			}
+			catch(NoDataFoundedException exception) {
+				throw new NoDataFoundedException("No Data Available in database...");
+			}
+			catch(Exception exception) {
+				throw new DataMismatchExcpetion("Internal server error!");
+			}
+	}
+	
+	
 }
