@@ -1,8 +1,9 @@
 package com.cg.onlineTest.controller;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Set;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +72,7 @@ public class QuestionTestController {
 	@PostMapping("/updateQuestion")
 	public ResponseEntity<Object> updateQuestion(@RequestBody AddQuestionHelper question) throws Exception{
 		logger.info("Updating");
-		Set<String> option = new HashSet<String>();
+		List<String> option = new ArrayList<String>();
 //		Category category = new Category();
 //		Stringclass cat = new Stringclass();
 		//category.setCategoryId(cat.catId);
@@ -173,7 +174,7 @@ class AddQuestionHelper{
 	public String questionTitle;
 	public int questionAnswer;
 	public long questionMarks;
-	public Set<String> option;
+	public List<String> option;
 	public long category_id;
 	
 }
@@ -184,7 +185,7 @@ class AddQuestionHelp{
 	public String questionTitle;
 	public int questionAnswer;
 	public long questionMarks;
-	public Set<String> option;
+	public List<String> option;
 	public long category_id;
 	
 }

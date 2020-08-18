@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cg.onlineTest.entities.User_Test;
 import com.cg.onlineTest.exceptions.CannotRetrieveDataException;
 import com.cg.onlineTest.exceptions.NoDataFoundedException;
-
 import com.cg.onlineTest.services.TopPerformerService;
+
 
 @SpringBootApplication
 @RestController
@@ -40,13 +40,9 @@ public class TopPerformerController {
 	 */
 	Logger logger = LoggerFactory.getLogger(TopPerformerController.class);
 	
-	
-	/*
-	 * getTestByUserId Method takes userId as argument and return list of All test assigned to that particular user. 
-	 */
 	@GetMapping("top_performers")
 	public ResponseEntity<List<User_Test>> listofTopPerformers() throws Exception{
-		logger.trace("listofTopPerformers Controller method Accessed...");    						// Default level is Info and trace is not upto the Info level so we have to set the property in application.context 
+		logger.trace("listofTopPerformers Controller method Accessed...");    						 
 		return new ResponseEntity<List<User_Test>>(topPerformer.topPerformers() ,HttpStatus.OK);
 	}
 	
@@ -79,5 +75,12 @@ public class TopPerformerController {
 		logger.trace("questionsCategory Controller method Accessed...");
 		return new ResponseEntity<HashMap<String, Long>>(topPerformer.questionsCategory(), HttpStatus.OK);
 	}
+	
+	@GetMapping("top_performer_avg")
+	public ResponseEntity<Object> topPerformersAvg() throws Exception{
+		logger.trace("topPerformersAvg Controller method Accessed...");
+		return new ResponseEntity<Object>(topPerformer.topPerformersAvg(), HttpStatus.OK);
+	}
 
 }
+

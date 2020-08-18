@@ -43,13 +43,22 @@ public class Test implements Serializable{
 	@Column(name = "Total_Question")
 	private long TotalQuestion;
 	
+	
+	@Column(name = "Test_Total_Marks")
+	private long testTotalMarks;
+	
+	@Column(name = "Start_Time")
+	private Timestamp startDate;
+	
+	@Column(name = "End_Time")
+	private Timestamp endDate;
+	
 	@OneToMany(mappedBy="testQuestions")
 	@JsonIgnore
 	private List<Question> allQuestion = new ArrayList<>();
 	
-	
-	
-	
+	@Column(name = "Test_Status")
+	private int testStatus;
 
 	@OneToMany(mappedBy="test")
 	@JsonIgnore
@@ -63,6 +72,18 @@ public class Test implements Serializable{
 	
 	
 	
+	public int getTestStatus() {
+		return testStatus;
+	}
+
+
+
+	public void setTestStatus(int testStatus) {
+		this.testStatus = testStatus;
+	}
+
+
+
 	public Set<User_Test> getUserTest() {
 		return userTest;
 	}
@@ -95,14 +116,7 @@ public class Test implements Serializable{
 		this.allQuestion = allQuestion;
 	}
 
-	@Column(name = "Test_Total_Marks")
-	private long testTotalMarks;
 	
-	@Column(name = "Start_Time")
-	private Timestamp startDate;
-	
-	@Column(name = "End_Time")
-	private Timestamp endDate;
 	
 	public Test() {
 		

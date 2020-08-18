@@ -1,5 +1,4 @@
 package com.cg.onlineTest.controller;
-
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -55,20 +54,20 @@ public class OnlineTestController {
 	/*
 	 * getUpcomingTest Method takes userId as argument and return list of all upcoming test details.
 	 */
-	@GetMapping("getUpcommingTestByUserId")
-	public ResponseEntity<List<Test>> getUpcomingTest(@RequestParam("userId") long userId) throws Exception{
-		logger.trace("getUpcomingTest Method Accessed...");   
-		return new ResponseEntity<List<Test>>(testService.getAllUpcomingTest(userId), HttpStatus.OK);
+	@GetMapping("getAllTest")
+	public ResponseEntity<List<Test>> getAllTest() throws Exception{
+		logger.trace("getAllTest Method Accessed...");   
+		return new ResponseEntity<List<Test>>(testService.getAllTest(), HttpStatus.OK);
 	}
 	
 	
 	/*
 	 *  getActiveTest Method takes userId as Argument and return only test which is currently active.
 	 */
-	@GetMapping("getActiveTestByUserId")
-	public ResponseEntity<Test> getActiveTest(@RequestParam("userId") long userId) throws Exception{
+	@GetMapping("getTestByUserId")
+	public ResponseEntity<Test> getActiveTest(@RequestParam("userId") long userId, @RequestParam("testId") long testId) throws Exception{
 		logger.trace("getActiveTest Method Accessed...");   
-		return new ResponseEntity<Test>(testService.getActiveTest(userId), HttpStatus.OK);
+		return new ResponseEntity<Test>(testService.getActiveTest(userId, testId), HttpStatus.OK);
 	}
 	
 	
@@ -76,9 +75,9 @@ public class OnlineTestController {
 	 *  getAllQuestion Method takes testId as argument and return List of question assigned to particular test.
 	 */
 	@GetMapping("getAllQuestion")
-	public ResponseEntity<List<Question>> getAllQuestion(@RequestParam("testId") long testId) throws Exception{
+	public ResponseEntity<List<Question>> getAllQuestion(@RequestParam("userId") long userId,  @RequestParam("testId") long testId) throws Exception{
 		logger.trace("getAllQuestion Method Accessed...");
-		return new ResponseEntity<List<Question>>(testService.getAllQuestion(testId), HttpStatus.OK);
+		return new ResponseEntity<List<Question>>(testService.getAllQuestion(userId, testId), HttpStatus.OK);
 	}
 	
 	

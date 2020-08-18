@@ -1,7 +1,8 @@
 package com.cg.onlineTest.entities;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
+
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -30,7 +31,7 @@ public class Question implements Serializable{
 	
 	@ElementCollection  
 	@CollectionTable(name="listOfOption")
-	private Set<String> questionOptions;
+	private List<String> questionOptions;
 	
 	@Column(name = "Question_Title")
 	private String questionTitle;
@@ -53,7 +54,7 @@ public class Question implements Serializable{
 		
 	}
 
-	public Question(long questionId, Set<String> questionOptions, String questionTitle, int questionAnswer,
+	public Question(long questionId, List<String> questionOptions, String questionTitle, int questionAnswer,
 			long questionMarks, Category questionCategory) {
 		super();
 		this.questionId = questionId;
@@ -74,11 +75,11 @@ public class Question implements Serializable{
 		this.questionId = questionId;
 	}
 
-	public Set<String> getQuestionOptions() {
+	public List<String> getQuestionOptions() {
 		return questionOptions;
 	}
 
-	public void setQuestionOptions(Set<String> questionOptions) {
+	public void setQuestionOptions(List<String> questionOptions) {
 		this.questionOptions = questionOptions;
 	}
 

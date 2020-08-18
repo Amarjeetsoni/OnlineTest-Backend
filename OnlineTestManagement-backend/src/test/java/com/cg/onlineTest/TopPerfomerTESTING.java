@@ -1,10 +1,9 @@
 package com.cg.onlineTest;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.cg.onlineTest.exceptions.CannotRetrieveDataException;
@@ -13,25 +12,34 @@ import com.cg.onlineTest.services.TopPerformerService;
 @SpringBootTest
 class TopPerfomerTESTING {
 
-	@Mock
-	TopPerformerService dao;
+	@Autowired
+	TopPerformerService service;
 	
 	@Test
-	void testGetTopPerformer() throws Exception {
-		when(dao.topPerformers()).thenReturn(null);
-		assertEquals(null, dao.topPerformers());
+	void testGetTotalTests() throws Exception {
+		assertEquals(4, service.getTotalTests());
 	}
 	
 	@Test
 	void testGetTotalUsers() throws CannotRetrieveDataException {
-		when(dao.getTotalUsers()).thenReturn(10L);
-		assertEquals(10, dao.getTotalUsers());
+		
+		assertEquals(7, service.getTotalUsers());
 	}
 	
 	@Test
-	void testGetActiveUsers() throws CannotRetrieveDataException {
-		when(dao.getTotalQuestions()).thenReturn(8L);
-		assertEquals(8, dao.getTotalQuestions());
+	void testGetQuestion() throws CannotRetrieveDataException {
+		assertEquals(39, service.getTotalQuestions());
 	}
-
+	
+	@Test
+	void testGetAllExamsException() {
+		assertDoesNotThrow(()-> service.allExams());
+	}
+	
+	@Test
+	void testquestionsCategoryException() {
+		assertDoesNotThrow(()-> service.questionsCategory());
+	}
+	
+	
 }

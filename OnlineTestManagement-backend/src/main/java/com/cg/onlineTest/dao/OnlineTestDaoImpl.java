@@ -75,6 +75,24 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 				testList.add(test);
 			}
 			logger.info("Data founded and sent to user interface.");
+			Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+			for(Test test: testList) {
+				int number = test.getEndDate().compareTo(timeStamp);
+				int secondComp = test.getStartDate().compareTo(timeStamp);
+				int lastComp = timeStamp.compareTo(test.getEndDate());
+				
+				if(number > 0) {
+					test.setTestStatus(1);
+				}
+				else {
+					test.setTestStatus(-1);
+				}
+				if(secondComp <= 0 && lastComp < 0) {
+					test.setTestStatus(0);
+					
+				}
+				
+			}
 			return testList;
 			
 		}
@@ -97,30 +115,34 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 	 * @return List<Test> this return List of test if data available otherwise throw exception.
 	 */
 	@Override
-	public List<Test> getAllUpcomingTest(long userId) throws Exception{
-		
+	public List<Test> getAllTest() throws Exception{
 		
 		try {
-			logger.info("getAllUpcomingTest dao method is accessed.");
-			List<Test> testList = getAllTestAssignToPerticularUser(userId);
+			logger.info("getAllTest dao method is accessed.");
+			String statement = "SELECT test FROM Test test";
+			TypedQuery<Test> query = entityManager.createQuery(statement, Test.class);
+			List<Test> testList = query.getResultList();
+			if(testList.size() == 0) {
+				throw new NoDataFoundedException("No Test Is Held Yet!... Wait for Completion of test!!");
+			}
 			Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-			List<Test> updatedTestList = new ArrayList<>();
 			for(Test test: testList) {
 				int number = test.getEndDate().compareTo(timeStamp);
+				int secondComp = test.getStartDate().compareTo(timeStamp);
+				int lastComp = timeStamp.compareTo(test.getEndDate());
+				
 				if(number > 0) {
-					updatedTestList.add(test);
+					test.setTestStatus(1);
 				}
-			
+				else {
+					test.setTestStatus(-1);
+				}
+				if(secondComp <= 0 && lastComp < 0) {
+					test.setTestStatus(0);
+				}
+				
 			}
-			if(updatedTestList.size() == 0) {
-				logger.error("All test is passed... no upcoming test is there for this user");
-				throw new NoDataFoundedException("All test are passed");
-			}
-			logger.info("Upcoming test data is send");
-			return updatedTestList;
-		}
-		catch(DataMismatchExcpetion exception) {
-			throw new DataMismatchExcpetion(exception.getMessage());
+			return testList;
 		}
 		catch(NoDataFoundedException exception) {
 			throw new NoDataFoundedException(exception.getMessage()); 
@@ -136,23 +158,31 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 	 * @return Test this return test if data available otherwise throw exception.
 	 */
 	@Override
-	public Test getActiveTest(long userId) throws Exception {
+	public Test getActiveTest(long userId, long testId) throws Exception {
 		try {
 		
-			logger.info("getActiveTest dao method is accessed.");	
-			List<Test> testList = getAllTestAssignToPerticularUser(userId);
-			
-			Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-			for(Test test: testList) {
-				int startNumber = test.getStartDate().compareTo(timeStamp);
-				int endNumber = test.getEndDate().compareTo(timeStamp);
-				if(startNumber > 0 && endNumber < 0) {
-					logger.info("Test founded and sent to service class.");	
-					return test;
-				}
+			logger.info("addFeedback dao method is accessed.");
+			String statement = "SELECT user FROM User_Test user WHERE User_Id=:pUser and Test_Id=:pTest";
+			TypedQuery<User_Test> query = entityManager.createQuery(statement, User_Test.class);
+			query.setParameter("pUser", userId);
+			query.setParameter("pTest", testId);
+			User_Test user_Test = query.getResultList().get(0);
+			if(user_Test.isAttempted()) {
+				throw new DataMismatchExcpetion("You Have Already Taken the test...");
 			}
-			logger.error("No Assign test is active currently");
-			throw new NoDataFoundedException("Currently No test is Active for given user");
+			User user = entityManager.find(User.class, userId);
+			if(user.isActiveTest()) {
+				throw new NoDataFoundedException("A session is Already Active...");
+			}
+			Test test = entityManager.find(Test.class, testId);
+			Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+			long miliSeconds = test.getEndDate().getTime() - timeStamp.getTime();
+			long second =  miliSeconds/1000;
+			long minutes = (second / 60);
+			if(minutes < test.getTestDuration()) {
+				throw new NoDataFoundedException("Start Test Time Is Passed... Now You can't start a new Test.");
+			}
+			return test;
 		}
 		catch(DataMismatchExcpetion exception) {
 			throw new DataMismatchExcpetion(exception.getMessage());
@@ -172,9 +202,13 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 	 * @return List<Question> this return List of Questions if data available otherwise throw exception.
 	 */
 	@Override
-	public List<Question> getAllQuestion(long testId) throws Exception{
+	public List<Question> getAllQuestion(long userId, long testId) throws Exception{
 	      
 		try {
+			User user = entityManager.find(User.class, userId);
+			if(user.isActiveTest()) {
+				throw new NoDataFoundedException("Already a Test session Is Active.");
+			}
 			logger.info("getAllQuestion dao method is accessed.");	
 			Test test = entityManager.find(Test.class, testId);
 			List<Question> questionList = test.getAllQuestion();
@@ -183,6 +217,8 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 				throw new NoDataFoundedException("No question details are available for this test");
 			}
 			logger.info("Founded test list and passed to service class");
+			user.setActiveTest(true);
+			entityManager.merge(user);
 			return questionList;
 		}
 		catch(NoDataFoundedException exception) {
@@ -321,6 +357,9 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 			user_Test.setUsertestAnswer(answer);
 			System.out.println(user_Test);
 			entityManager.merge(user_Test);
+			User user = entityManager.find(User.class, userId);
+			user.setActiveTest(false);
+			entityManager.merge(user);
 			logger.info("data saved successfully.");
 			return true;
 		}

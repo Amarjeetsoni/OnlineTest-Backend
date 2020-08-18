@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -39,6 +40,33 @@ public class TopPerformerDaoImpl implements TopPerformerDao {
 	
 	Logger logger = LoggerFactory.getLogger(TopPerformerDao.class);
 	
+	@Override
+	public List<User_Test> topPerformersAvg() throws Exception {
+		try {
+			logger.info("topPerformers dao method is accessed.");
+			String statement = "SELECT user FROM User_Test user WHERE isAttempted=1";
+			TypedQuery<User_Test> query = entityManager.createQuery(statement, User_Test.class);
+			List<User_Test> user_Test = query.getResultList();
+			if(user_Test.size() == 0) {
+				logger.error("No user Details is founded in USER_TEST table.");
+				throw new NoDataFoundedException("No Test Assigned to particular User...");
+			}
+			
+			Comparator<User_Test> compareByMarks = Comparator.comparingLong(ob -> ob.getMarksScored());
+			user_Test.sort(compareByMarks.reversed());
+			
+			if(user_Test.size()<4) {
+				logger.info("3 or less user found and send to admin dashboard interface.");
+				return user_Test;
+			}
+				
+			logger.info("Data founded and sent to admin dashboard interface.");
+			return user_Test;
+		}
+		catch(NoDataFoundedException exception) {
+			throw new NoDataFoundedException(exception.getMessage());
+		}
+	}
 	/*
 	 * This method is used to get all test list assigned to particular user.
 	 * @return List<User_Test> this return List of user if data available otherwise throw exception.

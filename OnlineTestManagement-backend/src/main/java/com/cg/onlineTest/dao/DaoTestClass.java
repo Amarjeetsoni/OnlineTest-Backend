@@ -5,7 +5,7 @@ package com.cg.onlineTest.dao;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -65,13 +65,20 @@ public class DaoTestClass {
 		return user;
 	}
 	
-	public boolean addOptionInTest(long question_id, Set<String> option) {
+	public boolean addOptionInTest(long question_id, List<String> option) {
 		Question question = entityManager.find(Question.class, question_id);
 		question.setQuestionOptions(option);
 		entityManager.merge(question);
 		return true;
 		
 		
+	}
+	public long getTestByTestTitle(String Title) {
+		String statement = "SELECT test FROM Test test WHERE testTitle=:pUser";
+		TypedQuery<Test> query = entityManager.createQuery(statement, Test.class);
+		query.setParameter("pUser", Title);
+		Test test = query.getResultList().get(0);
+		return test.getTest_Id();
 	}
 	
 	public boolean assignTest(long testId, long userId) throws Exception {
@@ -189,6 +196,19 @@ public class DaoTestClass {
 		entityManager.persist(test);
 		return true;
 	}
+
+	public List<Question> getAllTest() {
+		String statement = "SELECT question FROM Question question";
+		TypedQuery<Question> query = entityManager.createQuery(statement, Question.class);
+		return query.getResultList();
+		
+	}
 	
+	public List<Category> getAllCategory() {
+		String statement = "SELECT category FROM Category category";
+		TypedQuery<Category> query = entityManager.createQuery(statement, Category.class);
+		return query.getResultList();
+		
+	}
 	
 }

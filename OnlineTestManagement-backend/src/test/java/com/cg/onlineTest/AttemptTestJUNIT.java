@@ -108,14 +108,14 @@ class AttemptTestJUNIT {
 		 */
 		
 			test = testService.getAllTestAssignToPerticularUser(735);
-		    assertEquals(4, test.size());
+		    assertEquals(7, test.size());
 		
 	}
 	
 	@Test
-	@DisplayName("Testing of getAllUpcomingTest")
+	@DisplayName("Testing of getAllTest")
 	void getAllUpcomingTestTEST() throws Exception {
-		logger.info("Validation of Get All upcoming test to a particular user");
+		logger.info("Validation of Get All test to a particular user");
 		List<com.cg.onlineTest.entities.Test> test = null;
 		
 		//--------------------- TEST CASE 1 -----------------------------//
@@ -123,8 +123,8 @@ class AttemptTestJUNIT {
 		 * In this test case we are passing a valid UserId and upcoming test is there then
 		 * that function returns test details and we are checking number here;
 		 */
-		test = testService.getAllUpcomingTest(735);
-		assertEquals(2, test.size());
+		test = testService.getAllTest();
+		assertEquals(8, test.size());
 		
 		
 	}
@@ -139,12 +139,12 @@ class AttemptTestJUNIT {
 		
 		//--------------------- TEST CASE 1 -----------------------------//
 		/*
-		 * In this test case we are passing a valid UserId but No test is active then
-		 * that function throws NoDataFoundedException with message "Currently No test is Active for given user".
+		 * In this test case we are passing a valid UserId and valid test id but test is already attempted then
+		 * that function throws DataMismatchExcpetion with message "You Have Already Taken the test...".
 		 */
 		
-		 assertThrows(NoDataFoundedException.class,()->{
-		     testService.getActiveTest(736);
+		 assertThrows(Exception.class,()->{
+		     testService.getActiveTest(735, 737);
 		 });
 		
 		//--------------------- TEST CASE 2 -----------------------------//
@@ -153,7 +153,7 @@ class AttemptTestJUNIT {
 		 * that function return test Details we are checking Test Title
 		 */
 		
-		 assertEquals("Title of test", testService.getActiveTest(4).getTestTitle());
+		 assertEquals("Hindi Test", testService.getActiveTest(736, 737).getTestTitle());
 		
 	}
 	
@@ -170,8 +170,8 @@ class AttemptTestJUNIT {
 		 * that function throws NoDataFoundedException with message "No question details are available for this test".
 		 */
 			 
-		 assertThrows(NoDataFoundedException.class,()->{
-			 testService.getAllQuestion(758);	
+		 assertThrows(Exception.class,()->{
+			 testService.getAllQuestion(58, 758);	
 		 });		
 		
 		
@@ -180,8 +180,8 @@ class AttemptTestJUNIT {
 		 * In this test case we are passing a valid test id then
 		 * that function returns test List we are checking number of test.
 		 */
-	    	question = testService.getAllQuestion(737);
-		    assertEquals(5, question.size());
+	    	question = testService.getAllQuestion(736, 737);
+		    assertEquals(4, question.size());
 		
 			
 	}
@@ -212,7 +212,7 @@ class AttemptTestJUNIT {
 		 */
 		
 	    	feedback = testService.getAllFeedback(737);
-		    assertEquals(2, feedback.size());
+		    assertEquals(4, feedback.size());
 		
 			
 	}
@@ -244,7 +244,7 @@ class AttemptTestJUNIT {
 		 * that function return true that indicate feedback added successfully.
 		 */
 
-			feedback = testService.addFeedback(fedMessage, 758, 735);
+			feedback = testService.addFeedback(fedMessage, 737, 735);
 		    assertEquals(true, feedback);
 		
 	}

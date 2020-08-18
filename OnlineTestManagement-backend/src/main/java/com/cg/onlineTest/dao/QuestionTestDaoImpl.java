@@ -2,7 +2,7 @@ package com.cg.onlineTest.dao;
 
 
 import java.util.List;
-import java.util.Set;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -111,7 +111,7 @@ public class QuestionTestDaoImpl implements QuestionTestDao {
      Created By                -K Sai Deepika
 	 */
 	@Override
-	public boolean updateQuestion(long questionId, String questionTitle, Set<String> option, int questionAnswer,
+	public boolean updateQuestion(long questionId, String questionTitle, List<String> option, int questionAnswer,
 			long questionMarks,Category category) {
 		
 		Question question =  entityManager.find(Question.class,questionId);

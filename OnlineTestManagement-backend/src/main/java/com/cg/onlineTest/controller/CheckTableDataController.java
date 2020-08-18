@@ -2,8 +2,10 @@ package com.cg.onlineTest.controller;
 
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+
+import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -48,7 +50,6 @@ public class CheckTableDataController {
 	public ResponseEntity<Object> registerUser(@RequestBody NewUser user){
 		try {
 			   User adduser = new User();
-			   adduser.setUserId(user.userId);
 			   adduser.setUserName(user.userName);
 			   adduser.setAdmin(user.isAdmin);
 			   adduser.setEmailId(user.emailId);
@@ -69,7 +70,7 @@ public class CheckTableDataController {
 	public ResponseEntity<Object> registertest(@RequestBody NewTest user){
 		try {
 			   Test addTest = new Test();
-			   addTest.setTest_Id(user.testId);
+
 			   addTest.setTestTitle(user.testTitle);
 			   addTest.setTestDuration(user.testDuration);
 			   addTest.setTestTotalMarks(user.testTotalMarks);
@@ -116,11 +117,16 @@ public class CheckTableDataController {
 	   }
 	}
 	
+	@GetMapping("/getAllcategory")
+	public ResponseEntity<List<Category>> getAllCategory(){
+		return new ResponseEntity<List<Category>>(dao.getAllCategory(), HttpStatus.OK);
+	}
+	
 	@PostMapping("/addOption")
 	public ResponseEntity<Object> addOption(@RequestBody Options option){
 		try {
 			long question_id = option.question_Id;
-			Set<String> options = new HashSet<>();
+			List<String> options = new ArrayList<>();
 			options.add(option.option1);
 			options.add(option.option2);
 			options.add(option.option3);
@@ -203,7 +209,25 @@ public class CheckTableDataController {
 			return new ResponseEntity<Object>("Not Founded...", HttpStatus.BAD_GATEWAY);
 		}
 	}
+	@GetMapping("getTestIdByTestTitle")
+	public ResponseEntity<Object> getTestIdByTestTitle(@RequestParam("title") String title){
+	      try {
+	    	  return new ResponseEntity<Object>(dao.getTestByTestTitle(title), HttpStatus.OK);
+	      }
+	      catch(Exception exception) {
+	    	  return new ResponseEntity<Object>("Not Founded...", HttpStatus.BAD_GATEWAY);
+	      }
+	}
 	
+	@GetMapping("getAllQuestion")
+	public ResponseEntity<List<Question>> getAlltest(){
+		 try {
+	    	  return new ResponseEntity<List<Question>>(dao.getAllTest(), HttpStatus.OK);
+	      }
+	      catch(Exception exception) {
+	    	  return new ResponseEntity<List<Question>>(HttpStatus.BAD_GATEWAY);
+	      }
+	}
 	
 	@GetMapping("/getQuestion")
 	public ResponseEntity<Object> getQuestion(){
@@ -230,7 +254,6 @@ public class CheckTableDataController {
 }
 
 class NewUser{
-	public long userId;
 	public String userName;
 	public boolean isAdmin;
 	public String userPassword;
@@ -238,7 +261,6 @@ class NewUser{
 }
 
 class NewTest{
-	public long testId;
 	public String testTitle;
 	public long testDuration;
 	public long testTotalMarks;

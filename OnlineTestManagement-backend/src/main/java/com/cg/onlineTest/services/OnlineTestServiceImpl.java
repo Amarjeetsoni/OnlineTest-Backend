@@ -46,27 +46,27 @@ public class OnlineTestServiceImpl implements OnlineTestService{
 	 * getAllUpcomingTest method is used to call dao layer and used to get all upcoming test assign a particular user.
 	 */
 	@Override
-	public List<Test> getAllUpcomingTest(long userId) throws Exception{
+	public List<Test> getAllTest() throws Exception{
 		logger.info("getAllUpcomingTest service method accessed.");
-		return testDao.getAllUpcomingTest(userId);
+		return testDao.getAllTest();
 	}
 
 	/*
 	 * getActiveTest method is used to call dao layer and used to get a details of test which is active now.
 	 */
 	@Override
-	public Test getActiveTest(long userId) throws Exception{
+	public Test getActiveTest(long userId, long testId) throws Exception{
 		logger.info("getActiveTest service method accessed.");
-		return testDao.getActiveTest(userId);
+		return testDao.getActiveTest(userId, testId);
 	}
 
 	/*
 	 * getAllQuestion method is used to call dao layer and also used to get all Question assigned to a particular test.
 	 */
 	@Override
-	public List<Question> getAllQuestion(long testId) throws Exception {
+	public List<Question> getAllQuestion(long userId, long testId) throws Exception {
 		logger.info("getAllQuestion service method accessed.");
-		return testDao.getAllQuestion(testId);
+		return testDao.getAllQuestion(userId, testId);
 	}
 
 	

@@ -35,24 +35,24 @@ class AttemptTestTESTING {
 	@Test
 	void testgetAllUpcomingTest() throws Exception {
 		
-		when(testServices.getAllUpcomingTest(101)).thenReturn(null);
-		assertEquals(null, testServices.getAllUpcomingTest(101));
+		when(testServices.getAllTest()).thenReturn(null);
+		assertEquals(null, testServices.getAllTest());
 		
 	}
 	
 	@Test
 	void testgetActiveTest() throws Exception {
 		
-		when(testServices.getActiveTest(101)).thenReturn(null);
-		assertEquals(null, testServices.getActiveTest(101));
+		when(testServices.getActiveTest(101, 102)).thenReturn(null);
+		assertEquals(null, testServices.getActiveTest(101, 102));
 		
 	}
 	
 	@Test
 	void testgetAllQuestion() throws Exception {
 		
-		when(testServices.getAllQuestion(101)).thenReturn(null);
-		assertEquals(null, testServices.getAllQuestion(101));
+		when(testServices.getAllQuestion(101, 102)).thenReturn(null);
+		assertEquals(null, testServices.getAllQuestion(101, 102));
 	}
 	
 	@Test 
