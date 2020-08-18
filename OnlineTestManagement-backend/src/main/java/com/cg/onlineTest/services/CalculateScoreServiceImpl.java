@@ -72,12 +72,10 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 		userTest.setMarksScored(score);
 		userTest.setTestCorrectAnswer(answersCorrectedList);
 		userTest.setDeclared(true);
-		
 		calculateDao.setScore(userTest);
-	
 		logger.info("Method executed to calculate score ->" + score);
 		
-		List<CategoryResult> list =  categoryScore(userTest);
+		List<CategoryResult> list =  categoryScore(userTestId);
 		logger.info("Number of Categories: " + list.size());
 		return score;
 	}
@@ -90,8 +88,8 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 	 * 
 	 *  Returns List if Category_Result.
 	 */
-	public List<CategoryResult> categoryScore(User_Test userTest) throws Exception{
-		
+	public List<CategoryResult> categoryScore(Long userTestId) throws Exception{
+		User_Test userTest = calculateDao.getUserTest(userTestId);
 		List<Question> questionsList = userTest.getTest().getAllQuestion();
 		List<Boolean> answeredCorrectList = userTest.getTestCorrectAnswer();
 		
@@ -121,7 +119,7 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 					
 					if(answeredCorrectList.get(answerListIteration) == null)
 					{
-						
+						//doing nothing
 					}
 					else if(answeredCorrectList.get(answerListIteration) == true)
 					{
@@ -152,8 +150,13 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 		return categoryResultList;
 	}
 
+
+	@Override
+	public List<User_Test> getTests() throws Exception {
 		
-	
+			return calculateDao.getTests();
+		
+	}
 
 
 }
