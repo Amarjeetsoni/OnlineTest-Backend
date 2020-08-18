@@ -71,8 +71,10 @@ public class CalculateScoreServiceImpl implements CalculateScoreService {
 		logger.info("Score: "+score);
 		userTest.setMarksScored(score);
 		userTest.setTestCorrectAnswer(answersCorrectedList);
+		userTest.setDeclared(true);
 		
 		calculateDao.setScore(userTest);
+	
 		logger.info("Method executed to calculate score ->" + score);
 		
 		List<CategoryResult> list =  categoryScore(userTest);

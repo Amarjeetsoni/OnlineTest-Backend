@@ -56,6 +56,17 @@ public class User_Test {
 	private boolean isDeclared;
 	
 	
+	public boolean isDeclared() {
+		return isDeclared;
+	}
+
+
+
+
+	public void setDeclared(boolean isDeclared) {
+		this.isDeclared = isDeclared;
+	}
+
 	@Column(name = "MarksScored")
 	private long marksScored;
 	
