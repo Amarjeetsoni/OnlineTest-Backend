@@ -60,7 +60,7 @@ public class GetResultServiceImpl implements GetResultService {
 
 	@Override
 	public boolean assignTest(long testId, long userId) throws Exception {
-		logger.info("getAssignedTest service method accessed.");
+		logger.info("assignTest service method accessed.");
 		return resultDao.assignTest(testId, userId);
 	}
 

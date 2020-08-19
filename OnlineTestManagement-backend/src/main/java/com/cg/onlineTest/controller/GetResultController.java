@@ -18,14 +18,14 @@ import com.cg.onlineTest.services.GetResultService;
 @SpringBootApplication
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/getResult")
+@RequestMapping("/getResultModule")
 public class GetResultController {
 	
 
 	@Autowired
 	private GetResultService resultService;
 	
-	Logger logger = LoggerFactory.getLogger(OnlineTestController.class);
+	Logger logger = LoggerFactory.getLogger(GetResultController.class);
 
 	
 	/*
@@ -57,9 +57,10 @@ public class GetResultController {
 		return new ResponseEntity<Integer>(resultService.getActiveTest(userId), HttpStatus.OK);
 	}
 	
-	@GetMapping("/assignTest")
+	@GetMapping("assignTest")
 	public ResponseEntity<Object> assignTest(@RequestParam("testId") long testId, @RequestParam("userId") long userId) throws Exception{
 		try {
+		logger.info("assign test Module Controller is accessed----------------------------------");	
 		resultService.assignTest(testId, userId);
 	    return new ResponseEntity<Object>("User Founded... and Test Assigned", HttpStatus.OK);
 		}

@@ -154,31 +154,31 @@ public class GetResultDaoImpl implements GetResultDao {
 				logger.error("User id Or Test Id Is Invalid...");
 				throw new NoDataFoundedException("User id Or Test Id Is Invalid...");
 			}
-			List<Test> testList = new ArrayList<>();
-			testList = getAllTestAssign(userId);
+//			List<Test> testList = new ArrayList<>();
+//			testList = getAllTestAssign(userId);
 
-				Timestamp testStartDate = test.getStartDate();
-				Timestamp testEndDate = test.getEndDate();
-				for(Test testObject: testList) {
-					Timestamp assignedTestStartDate = testObject.getStartDate();
-					Timestamp assignedTestEndDate = testObject.getEndDate();
-					int firstCompare = assignedTestStartDate.compareTo(testEndDate);
-					int secondCompare = testEndDate.compareTo(assignedTestEndDate);
-					int thirdCompare = assignedTestStartDate.compareTo(testStartDate);
-					int fourthCompare = testStartDate.compareTo(assignedTestEndDate);
-					int fifthcompare =  testStartDate.compareTo(assignedTestStartDate);
-					int sixthCompare  = assignedTestEndDate.compareTo(testEndDate);
-					System.out.println(firstCompare + " " + secondCompare + " " + " " + thirdCompare + " " + fourthCompare + " " + fifthcompare + " " + sixthCompare);
-					if((firstCompare > 0 && secondCompare > 0) || (thirdCompare > 0 && fourthCompare > 0) || (fifthcompare > 0 && sixthCompare > 0)) {
-						logger.error("In the given slot user has assigned in another test...");
-						System.out.println(assignedTestStartDate + " " + testStartDate + "\n" + assignedTestEndDate + " " + testEndDate);
-						throw new NoDataFoundedException("In the given slot user has assigned in another test...");
-					}
-					else {
-						continue;
-					}
-					
-				}
+//				Timestamp testStartDate = test.getStartDate();
+//				Timestamp testEndDate = test.getEndDate();
+//				for(Test testObject: testList) {
+//					Timestamp assignedTestStartDate = testObject.getStartDate();
+//					Timestamp assignedTestEndDate = testObject.getEndDate();
+//					int firstCompare = assignedTestStartDate.compareTo(testEndDate);
+//					int secondCompare = testEndDate.compareTo(assignedTestEndDate);
+//					int thirdCompare = assignedTestStartDate.compareTo(testStartDate);
+//					int fourthCompare = testStartDate.compareTo(assignedTestEndDate);
+//					int fifthcompare =  testStartDate.compareTo(assignedTestStartDate);
+//					int sixthCompare  = assignedTestEndDate.compareTo(testEndDate);
+//					System.out.println(firstCompare + " " + secondCompare + " " + " " + thirdCompare + " " + fourthCompare + " " + fifthcompare + " " + sixthCompare);
+//					if((firstCompare > 0 && secondCompare > 0) || (thirdCompare > 0 && fourthCompare > 0) || (fifthcompare > 0 && sixthCompare > 0)) {
+//						logger.error("In the given slot user has assigned in another test...");
+//						System.out.println(assignedTestStartDate + " " + testStartDate + "\n" + assignedTestEndDate + " " + testEndDate);
+//						throw new NoDataFoundedException("In the given slot user has assigned in another test...");
+//					}
+//					else {
+//						continue;
+//					}
+//					
+//				}
 				User_Test usertest = new User_Test(user, test, 0, false, 0);
 				test.addUserTestDetails(usertest);
 				entityManager.merge(usertest);

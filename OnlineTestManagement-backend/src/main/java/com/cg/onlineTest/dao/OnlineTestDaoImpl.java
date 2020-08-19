@@ -103,7 +103,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao{
 			throw new NoDataFoundedException(exception.getMessage());
 		}
 		catch(Exception exception) {
-			throw new DataMismatchExcpetion("Internal server error!");
+			throw new Exception("Internal server error!");
 		}
 		
 		
