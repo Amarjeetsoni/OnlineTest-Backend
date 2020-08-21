@@ -18,7 +18,7 @@ import com.cg.onlineTest.services.GetResultService;
 @SpringBootApplication
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/getResultModule")
+@RequestMapping("/getResult")
 public class GetResultController {
 	
 
